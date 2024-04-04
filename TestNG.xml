@@ -1,0 +1,7 @@
+<suite name="UniTheme2_Checkout">
+    <test name="Check checkout page">
+        <classes>
+<!--            <class name="" />-->
+        </classes>
+    </test>
+</suite>
