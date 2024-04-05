@@ -4,11 +4,8 @@ import com.codeborne.selenide.*;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
-import org.testng.asserts.SoftAssert;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -30,14 +27,20 @@ public class DriverHooks {
     }
     @AfterStep
     public void assertUniqueIDOnPage() {
-        SoftAssert softAssert = new SoftAssert();
-        // Получение коллекции всех элементов с заданным селектором
         ElementsCollection collectionOfId = $$x("//*[@id]");
-        // Преобразование коллекции в множество
-        Set<SelenideElement> uniqueElements = new HashSet<>((Collection) collectionOfId);
-        // Проверка, что размер множества равен размеру исходной коллекции
-        boolean isUnique = uniqueElements.size() == collectionOfId.size();
-        softAssert.assertTrue(isUnique, "Коллекция ID на странице НЕ уникальна!");
+        // Создание множества для хранения уникальных значений
+        Set<String> uniqueValues = new HashSet<>();
+        // Проверка уникальности значений
+        for (SelenideElement element : collectionOfId) {
+            // Получение значения атрибута "id" и добавление его в множество
+            String idValue = element.getAttribute("id");
+            uniqueValues.add(idValue);
+        }
+        // Проверка, что размер множества равен размеру коллекции (все значения уникальны)
+        boolean isUnique = uniqueValues.size() == collectionOfId.size();
+        if(isUnique == false) {
+            System.out.println("Коллекция ID на странице НЕ уникальна!");
+        }
     }
 /*    @AfterStep // Действия совершаемые после каждого шага
     public void takeScreenShotAfterStep(Scenario scenario) {
