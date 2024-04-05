@@ -23,6 +23,7 @@ public class DriverHooks {
     }
     @AfterStep
     public void assertUniqueIDOnPage() {
+        String currentUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
         ElementsCollection collectionOfId = $$x("//*[@id]");
         // Создание множества для хранения уникальных значений
         Set<String> uniqueValues = new HashSet<>();
@@ -35,7 +36,7 @@ public class DriverHooks {
         // Проверка, что размер множества равен размеру коллекции (все значения уникальны)
         boolean isUnique = uniqueValues.size() == collectionOfId.size();
         if(isUnique == false) {
-            System.out.println("Коллекция ID на странице НЕ уникальна!");
+            System.out.println("Коллекция ID НЕ уникальна на странице: " + currentUrl);
         }
     }
     @After

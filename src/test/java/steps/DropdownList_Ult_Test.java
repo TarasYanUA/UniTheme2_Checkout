@@ -2,11 +2,8 @@ package steps;
 
 import adminPanel.csCartPages.BasicPage;
 import adminPanel.csCartPages.LayoutPage;
-import hooks.CucumberRunnerTest;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import org.testng.asserts.SoftAssert;
-import static com.codeborne.selenide.Selenide.*;
 
 public class DropdownList_Ult_Test {
     BasicPage basicPage = new BasicPage();
