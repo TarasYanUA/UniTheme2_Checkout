@@ -10,8 +10,6 @@ public class BasicPage {
     public static SelenideElement popupWindow = $(".ui-dialog-title");
     public SelenideElement button_Storefront = $(".icon-shopping-cart");
     public SelenideElement gearWheelOnTop = $(".dropdown-icon--tools");
-
-
     private SelenideElement menuDesign = $("#elm_menu_design");
     private SelenideElement sectionLayouts = $("#elm_menu_design_layouts");
     public LayoutPage navigateTo_LayoutPage(){
