@@ -21,10 +21,6 @@ public class DriverHooks {
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
     }
-    @After
-    public void closerBrowser() {
-        Selenide.closeWebDriver();
-    }
     @AfterStep
     public void assertUniqueIDOnPage() {
         ElementsCollection collectionOfId = $$x("//*[@id]");
@@ -42,11 +38,10 @@ public class DriverHooks {
             System.out.println("Коллекция ID на странице НЕ уникальна!");
         }
     }
-/*    @AfterStep // Действия совершаемые после каждого шага
-    public void takeScreenShotAfterStep(Scenario scenario) {
-        Selenide.screenshot(System.currentTimeMillis() + "steps");
-    }*/
-
+    @After
+    public void closerBrowser() {
+        Selenide.closeWebDriver();
+    }
 
     public void shiftBrowserTab(int tabNumber) {
         WebDriverRunner.getWebDriver().getWindowHandle();
@@ -56,4 +51,9 @@ public class DriverHooks {
         $("a[id*='_wrap_language_']").hover().click();
         $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
     }
+
+    /*    @AfterStep // Действия совершаемые после каждого шага
+    public void takeScreenShotAfterStep(Scenario scenario) {
+        Selenide.screenshot(System.currentTimeMillis() + "steps");
+    }*/
 }
