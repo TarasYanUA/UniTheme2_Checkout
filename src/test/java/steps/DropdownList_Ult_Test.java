@@ -3,22 +3,22 @@ package steps;
 import adminPanel.csCartPages.BasicPage;
 import adminPanel.csCartPages.LayoutPage;
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import storefront.HomePage;
-import org.openqa.selenium.Alert;
+
+import static com.codeborne.selenide.Selenide.$x;
 
 public class DropdownList_Ult_Test {
     BasicPage basicPage = new BasicPage();
     LayoutPage layoutPage = new LayoutPage();
     HomePage homePage = new HomePage();
     @Given("Устанавливаем макет Light v2 по умолчанию")
-    public void setLayout_LightV2_asDefault (){
+    public void setLayout_Light_asDefault(){
         LayoutPage layoutPage = basicPage.navigateTo_LayoutPage();
-/*        layoutPage.layout_LightV2.click();
-        layoutPage.setLayoutAsDefault();*/
+        layoutPage.layout_Light.click();
+        layoutPage.setLayoutAsDefault();
     }
     @And("Настраиваем блок {string} в виде выпадающего списка")
     public void setBlockAsDropDownList(String blockName) {
@@ -46,5 +46,9 @@ public class DropdownList_Ult_Test {
             BasicPage.popupWindow.shouldBe(Condition.visible);
             homePage.button_SignIn_Popup.click();
         }
+    }
+    @And("Переходим на страницу категории {string} {string}")
+    public void navigateTo_CategoryPage(String mainCategory, String subCategory) {
+        $x("//li[contains(@class, 'ty-menu-item__" + mainCategory + "')]//a[contains(@href, '" + subCategory + "/')]").click();
     }
 }

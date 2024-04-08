@@ -12,5 +12,4 @@ public class HomePage {
     public SelenideElement button_LogOut = $(".ut2-top-my-account a[href*='dispatch=auth.logout']");
     public SelenideElement button_SignIn = $(".ut2-top-my-account a[href*='login']");
     public SelenideElement button_SignIn_Popup = $("button[name='dispatch[auth.login]']");
-    public SelenideElement category_Tablets = $x("//li[contains(@class, \"ty-menu-item__electronics\")]//a[contains(@href, 'planshety/')]");
 }

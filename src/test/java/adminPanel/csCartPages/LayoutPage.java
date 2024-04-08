@@ -10,7 +10,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class LayoutPage {
     public LayoutPage(){super();}
 
-    public SelenideElement layout_LightV2 = $x("//a[contains(text(), '(Light)')]");
+    public SelenideElement layout_Light = $x("//a[contains(text(), '(Light)')]");
     private SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
     private SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public void setLayoutAsDefault() {
