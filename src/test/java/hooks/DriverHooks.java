@@ -44,15 +44,6 @@ public class DriverHooks {
         Selenide.closeWebDriver();
     }
 
-    public void shiftBrowserTab(int tabNumber) {
-        WebDriverRunner.getWebDriver().getWindowHandle();
-        switchTo().window(tabNumber);
-    }
-    public void selectLanguage(String lang_RuEnAr) {
-        $("a[id*='_wrap_language_']").hover().click();
-        $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
-    }
-
     /*    @AfterStep // Действия совершаемые после каждого шага
     public void takeScreenShotAfterStep(Scenario scenario) {
         Selenide.screenshot(System.currentTimeMillis() + "steps");
