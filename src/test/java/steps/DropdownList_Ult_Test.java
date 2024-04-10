@@ -23,11 +23,11 @@ public class DropdownList_Ult_Test {
     @And("Настраиваем блок {string} в виде выпадающего списка")
     public void setBlockAsDropDownList(String blockName) {
         layoutPage.layoutTab_Checkout.click();
-       /* layoutPage.navigateToBlockSettings(blockName);
+        layoutPage.navigateToBlockSettings(blockName);
         layoutPage.button_SettingsOfTemplate.click();
         if(!layoutPage.checkbox_DisplayAsDropDownList.isSelected())
             layoutPage.checkbox_DisplayAsDropDownList.click();
-        layoutPage.button_SaveBlockProperties.click();*/
+        layoutPage.button_SaveBlockProperties.click();
     }
 
     @When("Переходим на витрину")

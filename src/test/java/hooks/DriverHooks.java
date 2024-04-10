@@ -24,28 +24,33 @@ public class DriverHooks {
     @AfterStep
     public void assertUniqueIDOnPage() {
         String currentUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
-        ElementsCollection collectionOfId = $$x("//*[@id]");
-        // Создание множества для хранения уникальных значений
-        Set<String> uniqueValues = new HashSet<>();
-        // Проверка уникальности значений
-        for (SelenideElement element : collectionOfId) {
-            // Получение значения атрибута "id" и добавление его в множество
+        //Собираем первую коллекцию по селектору
+        ElementsCollection collectionOne_currentID = $$x("//*[@id]");
+        // Направляем значения из первой коллекции во вторую
+        List<String> collectionTwo_listOfID = new ArrayList<>();
+        for (SelenideElement element : collectionOne_currentID) {
             String idValue = element.getAttribute("id");
-            uniqueValues.add(idValue);
+            collectionTwo_listOfID.add(idValue);
         }
-        // Проверка, что размер множества равен размеру коллекции (все значения уникальны)
-        boolean isUnique = uniqueValues.size() == collectionOfId.size();
-        if(isUnique == false) {
-            System.out.println("Коллекция ID НЕ уникальна на странице: " + currentUrl);
+        // Поиск повторяющихся ID
+        Set<String> collectionThree_duplicatedID = new HashSet<>();
+        for (String idValue : collectionTwo_listOfID) {
+            // Если ID уже присутствует в коллекции collectionThree_duplicatedID, то это повторяющийся ID
+            if (collectionTwo_listOfID.indexOf(idValue) != collectionTwo_listOfID.lastIndexOf(idValue)) {
+                collectionThree_duplicatedID.add(idValue);
+            }
         }
-    }
+        // Вывод на экран неуникальных ID
+        if(!collectionThree_duplicatedID.isEmpty()) {
+            System.out.println("Коллекция ID НЕ уникальна на странице: " + currentUrl + " Список не уникальных ID: ");
+            for (String id : collectionThree_duplicatedID) {
+                System.out.print(id + ", ");
+                System.out.println();
+            }
+        }
+    }   //myList.forEach(item -> System.out.println(item)); //лямбда-выражение
     @After
     public void closerBrowser() {
         Selenide.closeWebDriver();
     }
-
-    /*    @AfterStep // Действия совершаемые после каждого шага
-    public void takeScreenShotAfterStep(Scenario scenario) {
-        Selenide.screenshot(System.currentTimeMillis() + "steps");
-    }*/
 }
