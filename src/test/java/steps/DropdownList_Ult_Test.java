@@ -103,7 +103,8 @@ public class DropdownList_Ult_Test {
         checkoutPage.field_Country.selectOption(country);
         checkoutPage.field_City.click();
         checkoutPage.field_City.clear();
-        $x("//div[@id='litecheckout_autocomplete_dropdown']//div[contains(text(), '" + city + "')]").click();
+        checkoutPage.field_City.sendKeys(city);
+        $(".litecheckout__overlay--active").click();
         if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").isDisplayed()) {
             checkoutPage.selectShippingMethod.click();
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
