@@ -3,6 +3,7 @@ package adminPanel.csCartPages;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import storefront.HomePage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class BasicPage {
     public BasicPage(){super();}
+    HomePage homePage = new HomePage();
 
     //Общие методы, что применяются во многих классах
     public void focusBrowserTab(int tabNumber) {
@@ -57,9 +59,17 @@ public class BasicPage {
     public SelenideElement gearWheelOnTop = $(".dropdown-icon--tools");
     private final SelenideElement menuDesign = $("#elm_menu_design");
     private final SelenideElement sectionLayouts = $("#elm_menu_design_layouts");
-    public LayoutPage navigateTo_LayoutPage(){
+    public void navigateTo_LayoutPage(){
         menuDesign.hover();
         sectionLayouts.click();
-        return new LayoutPage();
+    }
+    public void navigateToStorefrontMainPage() {
+        goTo_Storefront.scrollTo().click();
+        focusBrowserTab(1);
+        homePage.cookie.click();
+        sleep(1500);
+        if(HomePage.notification_close.exists())
+            HomePage.notification_close.click();
+        selectLanguage("ru");
     }
 }

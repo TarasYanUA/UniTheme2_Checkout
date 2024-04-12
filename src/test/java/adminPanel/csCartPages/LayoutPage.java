@@ -10,7 +10,6 @@ import static com.codeborne.selenide.Selenide.$x;
 public class LayoutPage {
     public LayoutPage(){super();}
 
-    public SelenideElement layout_Light = $x("//a[contains(text(), '(Light)')]");
     private SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
     private SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public void setLayoutAsDefault() {
@@ -28,4 +27,13 @@ public class LayoutPage {
     public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");
     public SelenideElement checkbox_DisplayAsDropDownList = $("input[id$='_properties_abt__ut2_as_select']");
     public SelenideElement button_SaveBlockProperties = $("input[name=\"dispatch[block_manager.update_block]\"]");
+
+    public void setBlockAsDropDownList(String blockName) {
+        layoutTab_Checkout.click();
+        navigateToBlockSettings(blockName);
+        button_SettingsOfTemplate.click();
+        if(!checkbox_DisplayAsDropDownList.isSelected())
+            checkbox_DisplayAsDropDownList.click();
+        button_SaveBlockProperties.click();
+    }
 }

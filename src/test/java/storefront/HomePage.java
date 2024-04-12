@@ -8,7 +8,7 @@ public class HomePage {
     public HomePage(){super();}
 
     public SelenideElement cookie = $(".cm-btn-success");
-    public SelenideElement notification_close = $(".cm-notification-close");
+    public static SelenideElement notification_close = $(".cm-notification-close");
     public SelenideElement header_MyAccount = $(".ut2-top-my-account .ut2-icon-outline-account-circle");
     public SelenideElement button_LogOut = $(".ut2-top-my-account a[href*='dispatch=auth.logout']");
     public SelenideElement button_SignIn = $(".ut2-top-my-account a[href*='login']");

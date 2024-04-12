@@ -2,9 +2,9 @@ package steps;
 
 import adminPanel.csCartPages.BasicPage;
 import adminPanel.csCartPages.LayoutPage;
-import com.codeborne.selenide.Condition;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.SoftAssertions;
 import storefront.CheckoutPage;
@@ -19,66 +19,39 @@ public class DropdownList_Ult_Test {
     CheckoutPage checkoutPage = new CheckoutPage();
     SoftAssertions softAssertions = new SoftAssertions();
 
-    @Given("Устанавливаем макет Light v2 по умолчанию")
-    public void setLayout_Light_asDefault(){
-        /*LayoutPage layoutPage = basicPage.navigateTo_LayoutPage();
-        layoutPage.layout_Light.click();
-        layoutPage.setLayoutAsDefault();*/
+    @Given("Устанавливаем макет {string} по умолчанию")
+    public void setLayout_asDefault(String layoutName){
+        basicPage.navigateTo_LayoutPage();
+        $x("//a[contains(text(), '(" + layoutName + ")')]").click();
+        layoutPage.setLayoutAsDefault();
     }
     @And("Настраиваем блок {string} в виде выпадающего списка")
     public void setBlockAsDropDownList(String blockName) {
-       /* layoutPage.layoutTab_Checkout.click();
-        layoutPage.navigateToBlockSettings(blockName);
-        layoutPage.button_SettingsOfTemplate.click();
-        if(!layoutPage.checkbox_DisplayAsDropDownList.isSelected())
-            layoutPage.checkbox_DisplayAsDropDownList.click();
-        layoutPage.button_SaveBlockProperties.click();*/
+        layoutPage.setBlockAsDropDownList(blockName);
     }
 
     @When("Переходим на витрину")
     public void navigateToStorefrontMainPage() {
-        basicPage.goTo_Storefront.scrollTo().click();
-        basicPage.focusBrowserTab(1);
-        homePage.cookie.click();
-        sleep(1500);
-        if(homePage.notification_close.exists())
-            homePage.notification_close.click();
-        basicPage.selectLanguage("ru");
+        basicPage.navigateToStorefrontMainPage();
     }
 
     @And("Авторизуемся на сайте \\(проверяем на уникальность ID)")
     public void authorizeOnStorefront() {
-        /*homePage.header_MyAccount.click();
-        if(!homePage.button_LogOut.exists()){
-            homePage.button_SignIn.click();
-            BasicPage.popupWindow.shouldBe(Condition.visible);
-            homePage.button_SignIn_Popup.click();
-        }
-        basicPage.assertUniqueIDOnPage();*/
+        checkoutPage.authorizeOnStorefront();
+        basicPage.assertUniqueIDOnPage();
     }
     @And("Переходим на страницу категории {string} {string} \\(проверяем на уникальность ID)")
     public void navigateTo_CategoryPage(String mainCategory, String subCategory) {
-        /*homePage.button_MainMenuCategories.click();
-        $("li[class='ty-menu__item cm-menu-item-responsive first-lvl ty-menu-item__" + mainCategory + "']").hover();
-        $x("//li[contains(@class, 'ty-menu-item__" + mainCategory + "')]//a[contains(@href, '" + subCategory + "/')]").click();
-        basicPage.assertUniqueIDOnPage();*/
+        checkoutPage.navigateTo_CategoryPage(mainCategory, subCategory);
+        basicPage.assertUniqueIDOnPage();
     }
     @And("Добавляем товар с опциями в корзину")
     public void addProductWithOptions() {
-       /* $(".ut2-btn__options").click();
-        BasicPage.popupWindow.shouldBe(Condition.visible);
-        $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
-        homePage.button_AddToCart_PopUp.click();
-        $(".notification-body-extended").shouldBe(Condition.visible);
-        homePage.button_ContinueShopping.click();*/
+        checkoutPage.addProductWithOptions();
     }
     @And("Добавляем товар с вариациями в корзину")
     public void addProductWithVariations() {
-        /*$("a[id^='opener_ut2_select_variation']").click();
-        BasicPage.popupWindow.shouldBe(Condition.visible);
-        homePage.button_AddToCart_PopUp.click();
-        $(".notification-body-extended").shouldBe(Condition.visible);
-        homePage.button_ContinueShopping.click();*/
+        checkoutPage.addProductWithVariations();
     }
     @And("Переходим на страницу чекаута \\(проверяем на уникальность ID)")
     public void navigateTo_CheckoutPage() {
@@ -88,31 +61,26 @@ public class DropdownList_Ult_Test {
     }
     @And("Используем промокод {string} \\(проверяем, что отобразился блок с применённой акцией)")
     public void usePromoCode(String promoCode) {
-        checkoutPage.button_PromoCode_Add.click();
-        checkoutPage.field_PromoCode.click();
-        checkoutPage.field_PromoCode.sendKeys(promoCode);
-        checkoutPage.button_PromoCode_Apply.click();
-        homePage.notification_close.shouldBe(Condition.visible);
-        softAssertions.assertThat($(".ty-coupons__item a[href]").isDisplayed())
-                .as("Промокод не применился или отсутствует секция с указанием применённого промокода!").isTrue();
+        checkoutPage.usePromoCode(promoCode);
     }
-
     @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod(String country, String city, String shippingMethod) {
-        checkoutPage.field_Country.click();
-        checkoutPage.field_Country.selectOption(country);
-        checkoutPage.field_City.click();
-        checkoutPage.field_City.clear();
-        checkoutPage.field_City.sendKeys(city);
-        $(".litecheckout__overlay--active").click();
-        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").isDisplayed()) {
-            checkoutPage.selectShippingMethod.click();
-            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
-        }
-        $x("(//label[contains(@for, 'store_')])[3]").click();
-        $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
+        checkoutPage.selectShippingMethod(country, city, shippingMethod);
+    }
+    @And("Выбираем способ оплаты {string}")
+    public void selectPaymentMethod(String paymentMethod) {
+        checkoutPage.selectPaymentMethod(paymentMethod);
+    }
+    @And("Ставим соглашения \\(проверяем на уникальность ID)")
+    public void checkAgreements() {
+        checkoutPage.checkAgreements();
         basicPage.assertUniqueIDOnPage();
-
-        screenshot("CheckoutPage");
+    }
+    @Then("Завершаем оформление заказа и проверяем, что мы на странице {string}")
+    public void placeOrder(String pageBreadcrumb) {
+        checkoutPage.button_PlaceOrder.click();
+        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
+                        .as("Заказ не оформлен успешно!");
+        basicPage.assertUniqueIDOnPage();
     }
 }
