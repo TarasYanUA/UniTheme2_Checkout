@@ -1,9 +1,11 @@
-package adminPanel.csCartPages;
+package steps.adminPanel.csCartPages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import storefront.HomePage;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import steps.storefront.HomePage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,11 +24,7 @@ public class BasicPage {
         getWebDriver().getWindowHandle();
         switchTo().window(tabNumber);
     }
-    public void selectLanguage(String lang_RuEnAr) {
-        $("a[id*='_wrap_language_']").hover().click();
-        $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
-    }
-    public void assertUniqueIDOnPage() {
+    public static void assertUniqueIDOnPage() {
         String currentUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
         //Собираем первую коллекцию по селектору
         ElementsCollection collectionOne_currentID = $$x("//*[@id]");
@@ -59,17 +57,17 @@ public class BasicPage {
     public SelenideElement gearWheelOnTop = $(".dropdown-icon--tools");
     private final SelenideElement menuDesign = $("#elm_menu_design");
     private final SelenideElement sectionLayouts = $("#elm_menu_design_layouts");
-    public void navigateTo_LayoutPage(){
+
+    @Given("Переходим на страницу \"Дизайн -- Макеты\"")
+    public LayoutPage navigateTo_LayoutPage() {
         menuDesign.hover();
         sectionLayouts.click();
+        return new LayoutPage();
     }
-    public void navigateToStorefrontMainPage() {
+    @When("Переходим на витрину")
+    public HomePage navigateToStorefrontMainPage() {
         goTo_Storefront.scrollTo().click();
         focusBrowserTab(1);
-        homePage.cookie.click();
-        sleep(1500);
-        if(HomePage.notification_close.exists())
-            HomePage.notification_close.click();
-        selectLanguage("ru");
+        return new HomePage();
     }
 }

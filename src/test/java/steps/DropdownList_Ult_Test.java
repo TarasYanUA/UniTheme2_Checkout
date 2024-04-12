@@ -1,50 +1,20 @@
 package steps;
 
-import adminPanel.csCartPages.BasicPage;
-import adminPanel.csCartPages.LayoutPage;
+import steps.adminPanel.csCartPages.BasicPage;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.assertj.core.api.SoftAssertions;
-import storefront.CheckoutPage;
-import storefront.HomePage;
+import steps.storefront.CheckoutPage;
+import steps.storefront.HomePage;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class DropdownList_Ult_Test {
     BasicPage basicPage = new BasicPage();
-    LayoutPage layoutPage = new LayoutPage();
     HomePage homePage = new HomePage();
     CheckoutPage checkoutPage = new CheckoutPage();
     SoftAssertions softAssertions = new SoftAssertions();
 
-    @Given("Устанавливаем макет {string} по умолчанию")
-    public void setLayout_asDefault(String layoutName){
-        basicPage.navigateTo_LayoutPage();
-        $x("//a[contains(text(), '(" + layoutName + ")')]").click();
-        layoutPage.setLayoutAsDefault();
-    }
-    @And("Настраиваем блок {string} в виде выпадающего списка")
-    public void setBlockAsDropDownList(String blockName) {
-        layoutPage.setBlockAsDropDownList(blockName);
-    }
-
-    @When("Переходим на витрину")
-    public void navigateToStorefrontMainPage() {
-        basicPage.navigateToStorefrontMainPage();
-    }
-
-    @And("Авторизуемся на сайте \\(проверяем на уникальность ID)")
-    public void authorizeOnStorefront() {
-        checkoutPage.authorizeOnStorefront();
-        basicPage.assertUniqueIDOnPage();
-    }
-    @And("Переходим на страницу категории {string} {string} \\(проверяем на уникальность ID)")
-    public void navigateTo_CategoryPage(String mainCategory, String subCategory) {
-        checkoutPage.navigateTo_CategoryPage(mainCategory, subCategory);
-        basicPage.assertUniqueIDOnPage();
-    }
     @And("Добавляем товар с опциями в корзину")
     public void addProductWithOptions() {
         checkoutPage.addProductWithOptions();
@@ -63,10 +33,6 @@ public class DropdownList_Ult_Test {
     public void usePromoCode(String promoCode) {
         checkoutPage.usePromoCode(promoCode);
     }
-    @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
-    public void selectShippingMethod(String country, String city, String shippingMethod) {
-        checkoutPage.selectShippingMethod(country, city, shippingMethod);
-    }
     @And("Выбираем способ оплаты {string}")
     public void selectPaymentMethod(String paymentMethod) {
         checkoutPage.selectPaymentMethod(paymentMethod);
@@ -81,6 +47,7 @@ public class DropdownList_Ult_Test {
         checkoutPage.button_PlaceOrder.click();
         softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
                         .as("Заказ не оформлен успешно!");
+        sleep(2000);
         basicPage.assertUniqueIDOnPage();
     }
 }

@@ -1,8 +1,9 @@
-package storefront;
+package steps.storefront;
 
-import adminPanel.csCartPages.BasicPage;
+import steps.adminPanel.csCartPages.BasicPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.cucumber.java.en.And;
 import org.assertj.core.api.SoftAssertions;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -24,19 +25,6 @@ public class CheckoutPage {
     HomePage homePage = new HomePage();
     SoftAssertions softAssertions = new SoftAssertions();
 
-    public void authorizeOnStorefront() {
-        homePage.header_MyAccount.click();
-        if(!homePage.button_LogOut.exists()){
-            homePage.button_SignIn.click();
-            BasicPage.popupWindow.shouldBe(Condition.visible);
-            homePage.button_SignIn_Popup.click();
-        }
-    }
-    public void navigateTo_CategoryPage(String mainCategory, String subCategory) {
-        homePage.button_MainMenuCategories.click();
-        $("li[class='ty-menu__item cm-menu-item-responsive first-lvl ty-menu-item__" + mainCategory + "']").hover();
-        $x("//li[contains(@class, 'ty-menu-item__" + mainCategory + "')]//a[contains(@href, '" + subCategory + "/')]").click();
-    }
     public void addProductWithOptions() {
         $(".ut2-btn__options").click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
@@ -61,6 +49,7 @@ public class CheckoutPage {
         softAssertions.assertThat($(".ty-coupons__item a[href]").isDisplayed())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!");
     }
+    @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod(String country, String city, String shippingMethod) {
         field_Country.click();
         field_Country.selectOption(country);
