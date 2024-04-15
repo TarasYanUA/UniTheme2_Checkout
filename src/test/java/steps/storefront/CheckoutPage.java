@@ -35,21 +35,6 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         softAssertions.assertThat($(".ty-coupons__item a[href]").isDisplayed())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!");
     }
-    @And("Выбираем способ оплаты {string}")
-    public void selectPaymentMethod(String paymentMethod) {
-        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
-            field_PaymentMethod.click();
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
-        }
-    }
-    @And("Ставим соглашения \\(проверяем на уникальность ID)")
-    public void checkAgreements() {
-        agreement_TermsAndCondition.click();
-        if(agreement_CheckoutPlaceOrder.isDisplayed())
-            agreement_CheckoutPlaceOrder.click();
-        assertUniqueIDOnPage();
-    }
     @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod(String country, String city, String shippingMethod) {
         field_Country.click();
@@ -64,6 +49,22 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
+        screenshot("CheckoutPage " + System.currentTimeMillis());
+    }
+    @And("Выбираем способ оплаты {string}")
+    public void selectPaymentMethod(String paymentMethod) {
+        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
+            field_PaymentMethod.click();
+            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
+            sleep(2000);
+        }
+    }
+    @And("Ставим соглашения \\(проверяем на уникальность ID)")
+    public void checkAgreements() {
+        agreement_TermsAndCondition.click();
+        if(agreement_CheckoutPlaceOrder.isDisplayed())
+            agreement_CheckoutPlaceOrder.click();
+        assertUniqueIDOnPage();
     }
     @Then("Завершаем оформление заказа и проверяем, что мы на странице {string}")
     public void placeOrder(String pageBreadcrumb) {
