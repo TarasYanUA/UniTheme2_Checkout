@@ -11,8 +11,8 @@ import static com.codeborne.selenide.Selenide.$x;
 public class LayoutPage {
     public LayoutPage(){super();}
 
-    private SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
-    private SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
+    private final SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
+    private final SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public SelenideElement layoutTab_Checkout = $x("//a[text()='Оформить заказ']");
     public void navigateToBlockSettings(String blockName) {
         $("div[data-ca-block-name='" + blockName + "']").$(".icon-cog").click();

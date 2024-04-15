@@ -1,5 +1,6 @@
 package steps.storefront;
 
+import hooks.AssertUniqueIDOnPage;
 import steps.adminPanel.csCartPages.BasicPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -7,7 +8,7 @@ import io.cucumber.java.en.And;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class HomePage {
+public class HomePage implements AssertUniqueIDOnPage {
     public HomePage(){super();}
 
     public SelenideElement cookie = $(".cm-btn-success");
@@ -30,7 +31,7 @@ public class HomePage {
             BasicPage.popupWindow.shouldBe(Condition.visible);
             button_SignIn_Popup.click();
         }
-        BasicPage.assertUniqueIDOnPage();
+        assertUniqueIDOnPage();
     }
     @And("Переключаемся на {string} язык интерфейса витрины")
     public void selectLanguage(String lang_RuEnAr) {
@@ -46,6 +47,29 @@ public class HomePage {
         button_MainMenuCategories.click();
         $("li[class='ty-menu__item cm-menu-item-responsive first-lvl ty-menu-item__" + mainCategory + "']").hover();
         $x("//li[contains(@class, 'ty-menu-item__" + mainCategory + "')]//a[contains(@href, '" + subCategory + "/')]").click();
-        BasicPage.assertUniqueIDOnPage();
+        assertUniqueIDOnPage();
+    }
+    @And("Добавляем товар с опциями в корзину")
+    public void addProductWithOptions() {
+        $(".ut2-btn__options").click();
+        BasicPage.popupWindow.shouldBe(Condition.visible);
+        $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
+        button_AddToCart_PopUp.click();
+        $(".notification-body-extended").shouldBe(Condition.visible);
+        button_ContinueShopping.click();
+    }
+    @And("Добавляем товар с вариациями в корзину")
+    public void addProductWithVariations() {
+        $("a[id^='opener_ut2_select_variation']").click();
+        BasicPage.popupWindow.shouldBe(Condition.visible);
+        button_AddToCart_PopUp.click();
+        $(".notification-body-extended").shouldBe(Condition.visible);
+        button_ContinueShopping.click();
+    }
+    @And("Переходим на страницу чекаута \\(проверяем на уникальность ID)")
+    public void navigateTo_CheckoutPage() {
+        header_Cart.click();
+        button_Checkout.click();
+        assertUniqueIDOnPage();
     }
 }

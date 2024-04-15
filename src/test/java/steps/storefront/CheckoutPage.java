@@ -1,6 +1,7 @@
 package steps.storefront;
 
-import steps.adminPanel.csCartPages.BasicPage;
+import hooks.AssertUniqueIDOnPage;
+import io.cucumber.java.en.Then;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.java.en.And;
@@ -8,8 +9,10 @@ import org.assertj.core.api.SoftAssertions;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class CheckoutPage {
+public class CheckoutPage implements AssertUniqueIDOnPage {
     public CheckoutPage(){super();}
+
+    SoftAssertions softAssertions = new SoftAssertions();
 
     public SelenideElement button_PromoCode_Add = $("a[id^='sw_dropdown']");
     public SelenideElement field_PromoCode = $(".ty-gift-certificate-coupon #coupon_field");
@@ -22,24 +25,7 @@ public class CheckoutPage {
     public SelenideElement agreement_CheckoutPlaceOrder = $("input[id^='gdpr_agreements_checkout_place_order_']");
     public SelenideElement button_PlaceOrder = $(".litecheckout__submit-btn");
 
-    HomePage homePage = new HomePage();
-    SoftAssertions softAssertions = new SoftAssertions();
-
-    public void addProductWithOptions() {
-        $(".ut2-btn__options").click();
-        BasicPage.popupWindow.shouldBe(Condition.visible);
-        $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
-        homePage.button_AddToCart_PopUp.click();
-        $(".notification-body-extended").shouldBe(Condition.visible);
-        homePage.button_ContinueShopping.click();
-    }
-    public void addProductWithVariations() {
-        $("a[id^='opener_ut2_select_variation']").click();
-        BasicPage.popupWindow.shouldBe(Condition.visible);
-        homePage.button_AddToCart_PopUp.click();
-        $(".notification-body-extended").shouldBe(Condition.visible);
-        homePage.button_ContinueShopping.click();
-    }
+    @And("Используем промокод {string} \\(проверяем, что отобразился блок с применённой акцией)")
     public void usePromoCode(String promoCode) {
         button_PromoCode_Add.click();
         field_PromoCode.click();
@@ -48,6 +34,21 @@ public class CheckoutPage {
         HomePage.notification_close.shouldBe(Condition.visible);
         softAssertions.assertThat($(".ty-coupons__item a[href]").isDisplayed())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!");
+    }
+    @And("Выбираем способ оплаты {string}")
+    public void selectPaymentMethod(String paymentMethod) {
+        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
+            field_PaymentMethod.click();
+            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
+            sleep(2000);
+        }
+    }
+    @And("Ставим соглашения \\(проверяем на уникальность ID)")
+    public void checkAgreements() {
+        agreement_TermsAndCondition.click();
+        if(agreement_CheckoutPlaceOrder.isDisplayed())
+            agreement_CheckoutPlaceOrder.click();
+        assertUniqueIDOnPage();
     }
     @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod(String country, String city, String shippingMethod) {
@@ -64,16 +65,12 @@ public class CheckoutPage {
         $x("(//label[contains(@for, 'store_')])[3]").click();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
     }
-    public void selectPaymentMethod(String paymentMethod) {
-        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
-            field_PaymentMethod.click();
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
-        }
-    }
-    public void checkAgreements() {
-        agreement_TermsAndCondition.click();
-        if(agreement_CheckoutPlaceOrder.isDisplayed())
-            agreement_CheckoutPlaceOrder.click();
+    @Then("Завершаем оформление заказа и проверяем, что мы на странице {string}")
+    public void placeOrder(String pageBreadcrumb) {
+        button_PlaceOrder.click();
+        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
+                .as("Заказ не оформлен успешно!");
+        sleep(2000);
+        assertUniqueIDOnPage();
     }
 }
