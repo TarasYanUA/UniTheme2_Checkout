@@ -8,6 +8,6 @@
 * Allure surefire-report.
 
 Проект можно запустить следующими вариантами:
-1) через Allure surefire отчёт: перейти в "Terminal" и ввести "mvn clean test". По окончанию теста в папке "target -> surefire reports" открыть файл "index.html" с помощью браузера.
-2) через файл CucumberRunnerTest
-3) через файл DropdownList_Ult.feature, путь к файлу: test -- java -- resources -- features
+1) через файл hooks.CucumberRunnerTest, путь к файлу: test -- java -- hooks
+2) через файл DropdownList_Ult.feature, путь к файлу: test -- java -- resources -- features 
+3) через Allure surefire отчёт: перейти в "Terminal" и ввести "mvn clean test". По окончанию теста в папке "target -> surefire reports" открыть файл "index.html" с помощью браузера

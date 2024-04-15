@@ -21,7 +21,7 @@ public class DriverHooks {
     }
     @After
     public void closerBrowser() {
-        //screenshot("Finish - " + System.currentTimeMillis());
+        screenshot("Finish " + System.currentTimeMillis());
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertAll();
         closeWebDriver();

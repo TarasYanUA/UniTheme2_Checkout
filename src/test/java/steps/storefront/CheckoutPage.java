@@ -36,7 +36,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!");
     }
     @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
-    public void selectShippingMethod(String country, String city, String shippingMethod) {
+    public void selectShippingMethod_asDropDownList(String country, String city, String shippingMethod) {
         field_Country.click();
         field_Country.selectOption(country);
         field_City.click();
@@ -52,7 +52,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         screenshot("CheckoutPage " + System.currentTimeMillis());
     }
     @And("Выбираем способ оплаты {string}")
-    public void selectPaymentMethod(String paymentMethod) {
+    public void selectPaymentMethod_asDropDownList(String paymentMethod) {
         if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
             field_PaymentMethod.click();
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
