@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
     public static final String BASIC_URL = "https://trs.test.abt.team/4172ultru_unitheme2/admin.php?dispatch=settings.manage&section_id=Appearance";
-    @Before
+    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);

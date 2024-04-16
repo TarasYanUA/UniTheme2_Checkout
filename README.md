@@ -1,13 +1,16 @@
-Данный проект разработан для проверки страницы оформления заказа в теме UniTheme2.
+Данный проект разработан **для проверки страницы оформления заказа** в теме UniTheme2.
 Актуальная версия UniTheme2 темы 4.17.2d. Можно установить как саму тему отдельно, так и Пакет UniTheme2 (UltRu).
 
-Здесь используются следующие библиотеки:
+Здесь используются следующие **библиотеки**:
 * Selenide;
+* JUnit5;
 * Cucumber;
 * Assertj Core;
-* Allure surefire-report.
+* Cucumber JSON Report.
 
-Проект можно запустить следующими вариантами:
-1) через файл hooks.CucumberRunnerTest, путь к файлу: test -- java -- hooks
-2) через файл DropdownList_Ult.feature, путь к файлу: test -- java -- resources -- features 
-3) через Allure surefire отчёт: перейти в "Terminal" и ввести "mvn clean test". По окончанию теста в папке "target -> surefire reports" открыть файл "index.html" с помощью браузера
+**Проект запускается** через файл **CucumberRunnerTest**, путь к файлу: src -- test -- java
+
+**Cucumber JSON Report отчёт**:
+- найти файл "target -- cucumber_target.html",
+- на файле нажать правую кнопку мыши,
+- выбрать "Open in -- Browser -- Chrome". 

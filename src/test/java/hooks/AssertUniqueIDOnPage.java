@@ -32,10 +32,11 @@ public interface AssertUniqueIDOnPage {
         }
         // Вывод на экран неуникальных ID
         if(!collectionThree_duplicatedID.isEmpty()) {
-            System.out.println("\n\nКоллекция ID НЕ уникальна на странице: " + currentUrl + " Список не уникальных ID: ");
+            System.out.println("\nКоллекция ID НЕ уникальна на странице: " + currentUrl + " Список не уникальных ID: ");
             for (String id : collectionThree_duplicatedID) {
                 System.out.print(id + ", ");
             }
+            System.out.println();
         }
     }   //collectionThree_duplicatedID.forEach(id -> System.out.println(id + ", ")); //лямбда-выражение
 }
