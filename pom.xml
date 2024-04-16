@@ -13,6 +13,7 @@
         <maven.compiler.target>18</maven.compiler.target>
         <aspectj.version>1.9.22</aspectj.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <cucumber.plugin>json:target/cucumber.json</cucumber.plugin>
     </properties>
 
     <dependencies>
@@ -77,8 +78,10 @@
                     </includes>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                        -Dcucumber.options="--plugin json:target/cucumber-reports/cucumber.json"
                     </argLine>
+                    <systemPropertyVariables>
+                        <cucumber.plugin>${cucumber.plugin}</cucumber.plugin>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>

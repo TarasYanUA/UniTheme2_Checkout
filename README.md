@@ -5,7 +5,7 @@
 * Selenide;
 * JUnit5;
 * Cucumber;
-* Assertj Core;
+* Assertj;
 * Cucumber JSON Report.
 
 **Проект запускается** через файл **CucumberRunnerTest**, путь к файлу: src -- test -- java
