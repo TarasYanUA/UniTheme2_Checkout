@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Установка уровня логирования для SLF4J на OFF -->
+    <logger name="org.slf4j" level="OFF"/>
+
+</configuration>

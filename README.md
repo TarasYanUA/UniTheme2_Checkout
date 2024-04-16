@@ -6,7 +6,8 @@
 * JUnit5;
 * Cucumber;
 * Assertj;
-* Cucumber JSON Report.
+* Cucumber JSON Report;
+* Файл логирования для SLF4J, чтобы отключить лишние логи.
 
 **Проект запускается** через файл **CucumberRunnerTest**, путь к файлу: src -- test -- java
 
