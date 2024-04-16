@@ -19,6 +19,7 @@ public class DriverHooks {
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
         Configuration.holdBrowserOpen = false; //не закрываем браузер пока ведём разработку
         Configuration.screenshots = true; //делаем скриншоты при падении
+        Configuration.timeout = 6000;   //настройка таймаута
 
         SoftAssertions softAssertions = new SoftAssertions();
         CollectAssertMessages.setSoftAssertions(softAssertions);
@@ -28,7 +29,7 @@ public class DriverHooks {
     }
     @After
     public void closerBrowser() {
-        screenshot("Finish " + System.currentTimeMillis());
+        screenshot("Success " + System.currentTimeMillis());
 
         SoftAssertions softAssertions = CollectAssertMessages.getSoftAssertions();
         try {

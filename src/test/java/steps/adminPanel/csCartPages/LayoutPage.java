@@ -40,4 +40,13 @@ public class LayoutPage {
             checkbox_DisplayAsDropDownList.click();
         button_SaveBlockProperties.click();
     }
+    @And("Настраиваем блок {string} в виде обычного списка")
+    public void setBlockAsSimpleList(String blockName) {
+        layoutTab_Checkout.click();
+        navigateToBlockSettings(blockName);
+        button_SettingsOfTemplate.click();
+        if(checkbox_DisplayAsDropDownList.isSelected())
+            checkbox_DisplayAsDropDownList.click();
+        button_SaveBlockProperties.click();
+    }
 }

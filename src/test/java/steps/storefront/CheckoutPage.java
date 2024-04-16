@@ -37,7 +37,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
                 .isTrue();
     }
-    @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
+    @And("Выбираем способ доставки из выпадающего списка: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod_asDropDownList(String country, String city, String shippingMethod) {
         field_Country.click();
         field_Country.selectOption(country);
@@ -53,10 +53,32 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
         screenshot("CheckoutPage " + System.currentTimeMillis());
     }
-    @And("Выбираем способ оплаты {string}")
+    @And("Выбираем способ доставки из обычного списка: {string}, {string}, {string} и выбираем пункт выдачи")
+    public void selectShippingMethod_asSimpleList(String country, String city, String shippingMethod) {
+        field_Country.click();
+        field_Country.selectOption(country);
+        field_City.click();
+        field_City.clear();
+        field_City.sendKeys(city);
+
+        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '\" + shippingMethod + \"')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
+            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
+        }
+        $x("(//label[contains(@for, 'store_')])[3]").click();
+        sleep(2000);
+        screenshot("CheckoutPage " + System.currentTimeMillis());
+    }
+    @And("Выбираем способ оплаты {string} из выпадающего списка")
     public void selectPaymentMethod_asDropDownList(String paymentMethod) {
         if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
             field_PaymentMethod.click();
+            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
+            sleep(2000);
+        }
+    }
+    @And("Выбираем способ оплаты {string} из обычного списка")
+    public void selectPaymentMethod_asSimpleList(String paymentMethod) {
+        if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
             sleep(2000);
         }
