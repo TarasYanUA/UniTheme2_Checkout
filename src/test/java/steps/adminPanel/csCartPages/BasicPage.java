@@ -25,13 +25,12 @@ public class BasicPage {
     private final SelenideElement sectionLayouts = $("#elm_menu_design_layouts");
 
     @Given("Переходим на страницу \"Дизайн -- Макеты\"")
-    public LayoutPage navigateTo_LayoutPage() {
+    public void navigateTo_LayoutPage() {
         menuDesign.hover();
         sectionLayouts.click();
-        return new LayoutPage();
     }
     @When("Переходим на витрину")
-    public HomePage navigateToStorefrontMainPage() {
+    public HomePage navigateToStorefront_HomePage() {
         goTo_Storefront.scrollTo().click();
         focusBrowserTab(1);
         return new HomePage();

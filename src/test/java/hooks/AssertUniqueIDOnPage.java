@@ -36,8 +36,8 @@ public interface AssertUniqueIDOnPage {
             System.out.println("Список не уникальных ID: ");
             for (String id : collectionThree_duplicatedID) {
                 System.out.print(id + ", ");
-            }
+            }    //collectionThree_duplicatedID.forEach(id -> System.out.println(id + ", ")); //лямбда-выражение
             System.out.println();
         }
-    }   //collectionThree_duplicatedID.forEach(id -> System.out.println(id + ", ")); //лямбда-выражение
+    }
 }

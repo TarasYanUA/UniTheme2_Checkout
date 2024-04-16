@@ -1,18 +1,18 @@
 package steps.storefront;
 
 import hooks.AssertUniqueIDOnPage;
+import hooks.CollectAssertMessages;
 import io.cucumber.java.en.Then;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.java.en.And;
-import org.assertj.core.api.SoftAssertions;
 
 import static com.codeborne.selenide.Selenide.*;
+import org.assertj.core.api.SoftAssertions;
 
 public class CheckoutPage implements AssertUniqueIDOnPage {
     public CheckoutPage(){super();}
-
-    SoftAssertions softAssertions = new SoftAssertions();
+    SoftAssertions softAssertions = CollectAssertMessages.getSoftAssertions();
 
     public SelenideElement button_PromoCode_Add = $("a[id^='sw_dropdown']");
     public SelenideElement field_PromoCode = $(".ty-gift-certificate-coupon #coupon_field");
@@ -32,8 +32,10 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
         HomePage.notification_close.shouldBe(Condition.visible);
-        softAssertions.assertThat($(".ty-coupons__item a[href]").isDisplayed())
-                .as("Промокод не применился или отсутствует секция с указанием применённого промокода!");
+
+        softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
+                .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
+                .isTrue();
     }
     @And("Выбираем способ доставки: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod_asDropDownList(String country, String city, String shippingMethod) {
@@ -69,9 +71,11 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @Then("Завершаем оформление заказа и проверяем, что мы на странице {string}")
     public void placeOrder(String pageBreadcrumb) {
         button_PlaceOrder.click();
-        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
-                .as("Заказ не оформлен успешно!");
         sleep(2000);
+
+        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
+                .as("Заказ не оформлен успешно!")
+                .isTrue();
         assertUniqueIDOnPage();
     }
 }
