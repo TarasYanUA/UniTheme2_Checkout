@@ -33,6 +33,15 @@ public class HomePage implements AssertUniqueIDOnPage {
         }
         assertUniqueIDOnPage();
     }
+    @And("Выходим из личного кабинета \\(проверяем на уникальность ID)")
+    public void unAuthorizeOnStorefront() {
+        header_MyAccount.click();
+        if(button_LogOut.exists()){
+            button_LogOut.click();
+            sleep(2000);
+        }
+        assertUniqueIDOnPage();
+    }
     @And("Переключаемся на {string} язык интерфейса витрины")
     public void selectLanguage(String lang_RuEnAr) {
         cookie.click();
