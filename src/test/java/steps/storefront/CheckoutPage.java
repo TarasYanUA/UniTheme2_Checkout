@@ -60,8 +60,9 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_City.click();
         field_City.clear();
         field_City.sendKeys(city);
+        $(".litecheckout__overlay--active").click();
 
-        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '\" + shippingMethod + \"')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
+        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
