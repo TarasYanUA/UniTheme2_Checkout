@@ -32,10 +32,20 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
         HomePage.notification_close.shouldBe(Condition.visible);
+        sleep(1000);
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
                 .isTrue();
+    }
+    @And("Заполняем обязательные поля для неавторизованных пользователей")
+    public void fillMandatoryFields() {
+        executeJavaScript("var element = document.querySelector('#litecheckout_email');element.click();");
+        executeJavaScript("document.querySelector('#litecheckout_email').value = 'mail@ukr.net';");
+        executeJavaScript("var element = document.querySelector('#litecheckout_s_address');element.click();");
+        executeJavaScript("document.querySelector('#litecheckout_s_address').value = 'Кубанская 21';");
+        executeJavaScript("var element = document.querySelector('#litecheckout_s_zipcode');element.click();");
+        executeJavaScript("document.querySelector('#litecheckout_s_zipcode').value = '101000';");
     }
     @And("Выбираем способ доставки из выпадающего списка: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod_asDropDownList(String country, String city, String shippingMethod) {

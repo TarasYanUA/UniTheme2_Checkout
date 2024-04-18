@@ -38,7 +38,6 @@ public class HomePage implements AssertUniqueIDOnPage {
         header_MyAccount.click();
         if(button_LogOut.exists()){
             button_LogOut.click();
-            sleep(2000);
         }
         assertUniqueIDOnPage();
     }
