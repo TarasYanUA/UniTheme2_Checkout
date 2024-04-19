@@ -29,8 +29,6 @@ public class DriverHooks {
     }
     @After
     public void closerBrowser() {
-        screenshot("Success " + System.currentTimeMillis());
-
         SoftAssertions softAssertions = CollectAssertMessages.getSoftAssertions();
         try {
             softAssertions.assertAll();
