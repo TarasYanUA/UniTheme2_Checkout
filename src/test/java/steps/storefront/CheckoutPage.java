@@ -59,7 +59,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи")
     public void selectShippingMethod_asDropDownList(String shippingMethod) {
         $(".litecheckout__overlay--active").click();
-        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").isDisplayed()) {
+        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
             selectShippingMethod.click();
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
@@ -67,15 +67,9 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
         screenshot("ShippingMethod " + System.currentTimeMillis());
     }
-    @And("Выбираем способ доставки из обычного списка: {string}, {string}, {string} и выбираем пункт выдачи")
-    public void selectShippingMethod_asSimpleList(String country, String city, String shippingMethod) {
-        field_Country.click();
-        field_Country.selectOption(country);
-        field_City.click();
-        field_City.clear();
-        field_City.sendKeys(city);
+    @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи")
+    public void selectShippingMethod_asSimpleList(String shippingMethod) {
         $(".litecheckout__overlay--active").click();
-
         if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
@@ -83,8 +77,15 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         sleep(2000);
         screenshot("ShippingMethod " + System.currentTimeMillis());
     }
-    @And("Выбираем способ доставки {string} для первого продавца")
-    public void selectShippingMethodForFirstVendor(String shippingMethod) {
+    @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")
+    public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod) {
+        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").exists()){
+            $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
+            $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
+        }
+    }
+    @And("Выбираем способ доставки {string} для первого продавца из обычного списка")
+    public void selectShippingMethodForFirstVendor_SimpleList(String shippingMethod) {
         if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();

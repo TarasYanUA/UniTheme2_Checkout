@@ -26,7 +26,6 @@ public class HomePage implements AssertUniqueIDOnPage {
     @And("Переключаемся на {string} язык интерфейса витрины")
     public void selectLanguage(String lang_RuEnAr) {
         cookie.click();
-        //sleep(1000);
         if(notification_close.exists())
             notification_close.click();
         $("a[id*='_wrap_language_']").hover().click();
