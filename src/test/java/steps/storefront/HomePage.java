@@ -23,6 +23,15 @@ public class HomePage implements AssertUniqueIDOnPage {
     public SelenideElement header_Cart = $(".ut2-top-cart-content .ty-hand");
     public SelenideElement button_Checkout = $(".cm-cart-buttons a[href$='checkout-ru/']");
 
+    @And("Переключаемся на {string} язык интерфейса витрины")
+    public void selectLanguage(String lang_RuEnAr) {
+        cookie.click();
+        //sleep(1000);
+        if(notification_close.exists())
+            notification_close.click();
+        $("a[id*='_wrap_language_']").hover().click();
+        $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
+    }
     @And("Авторизуемся на сайте \\(проверяем на уникальность ID)")
     public void authorizeOnStorefront() {
         header_MyAccount.click();
@@ -40,15 +49,6 @@ public class HomePage implements AssertUniqueIDOnPage {
             button_LogOut.click();
         }
         assertUniqueIDOnPage();
-    }
-    @And("Переключаемся на {string} язык интерфейса витрины")
-    public void selectLanguage(String lang_RuEnAr) {
-        cookie.click();
-        sleep(1000);
-        if(notification_close.exists())
-            notification_close.click();
-        $("a[id*='_wrap_language_']").hover().click();
-        $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
     }
     @And("Переходим на страницу категории {string} {string} \\(проверяем на уникальность ID)")
     public void navigateTo_CategoryPage(String mainCategory, String subCategory) {

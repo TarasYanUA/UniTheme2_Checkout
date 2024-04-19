@@ -23,6 +23,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public SelenideElement field_PaymentMethod = $(".b--pay-way__opted__text__title.b--pay-ship__opted__text__title");
     public SelenideElement agreement_TermsAndCondition = $("input[id^='id_accept_terms']");
     public SelenideElement agreement_CheckoutPlaceOrder = $("input[id^='gdpr_agreements_checkout_place_order_']");
+    public SelenideElement agreement_CsCart = $("input[id^='product_agreements_']");
     public SelenideElement button_PlaceOrder = $(".litecheckout__submit-btn");
 
     @And("Используем промокод {string} \\(проверяем, что отобразился блок с применённой акцией)")
@@ -47,13 +48,16 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         executeJavaScript("var element = document.querySelector('#litecheckout_s_zipcode');element.click();");
         executeJavaScript("document.querySelector('#litecheckout_s_zipcode').value = '101000';");
     }
-    @And("Выбираем способ доставки из выпадающего списка: {string}, {string}, {string} и выбираем пункт выдачи")
-    public void selectShippingMethod_asDropDownList(String country, String city, String shippingMethod) {
+    @And("Выбираем страну и город доставки: {string}, {string}")
+    public void selectCountryAndCity(String country, String city) {
         field_Country.click();
         field_Country.selectOption(country);
         field_City.click();
         field_City.clear();
         field_City.sendKeys(city);
+    }
+    @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи")
+    public void selectShippingMethod_asDropDownList(String shippingMethod) {
         $(".litecheckout__overlay--active").click();
         if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").isDisplayed()) {
             selectShippingMethod.click();
@@ -61,7 +65,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
-        screenshot("CheckoutPage " + System.currentTimeMillis());
+        screenshot("ShippingMethod " + System.currentTimeMillis());
     }
     @And("Выбираем способ доставки из обычного списка: {string}, {string}, {string} и выбираем пункт выдачи")
     public void selectShippingMethod_asSimpleList(String country, String city, String shippingMethod) {
@@ -77,14 +81,23 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
         sleep(2000);
-        screenshot("CheckoutPage " + System.currentTimeMillis());
+        screenshot("ShippingMethod " + System.currentTimeMillis());
     }
+    @And("Выбираем способ доставки {string} для первого продавца")
+    public void selectShippingMethodForFirstVendor(String shippingMethod) {
+        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").exists()){
+            $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
+            $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
+        }
+    }
+
     @And("Выбираем способ оплаты {string} из выпадающего списка")
     public void selectPaymentMethod_asDropDownList(String paymentMethod) {
         if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
             field_PaymentMethod.click();
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
             sleep(2000);
+            screenshot("PaymentMethod " + System.currentTimeMillis());
         }
     }
     @And("Выбираем способ оплаты {string} из обычного списка")
@@ -92,13 +105,16 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
             sleep(2000);
+            screenshot("PaymentMethod " + System.currentTimeMillis());
         }
     }
     @And("Ставим соглашения \\(проверяем на уникальность ID)")
     public void checkAgreements() {
         agreement_TermsAndCondition.click();
-        if(agreement_CheckoutPlaceOrder.isDisplayed())
+        if(agreement_CheckoutPlaceOrder.exists())
             agreement_CheckoutPlaceOrder.click();
+        if(agreement_CsCart.exists())
+            agreement_CsCart.click();
         assertUniqueIDOnPage();
     }
     @Then("Завершаем оформление заказа и проверяем, что мы на странице {string}")
