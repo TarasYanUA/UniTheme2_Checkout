@@ -55,27 +55,28 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_City.click();
         field_City.clear();
         field_City.sendKeys(city);
+        $(".litecheckout__overlay--active").click();
+        $(".litecheckout__overlay--active").shouldBe(Condition.disappear);
     }
     @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи \\(скриншот {string})")
     public void selectShippingMethod_asDropDownList(String shippingMethod, String screenshot) {
-        $(".litecheckout__overlay--active").click();
         if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
             selectShippingMethod.click();
+            screenshot(screenshot + " ShippingMethod DropdownList");
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
-        screenshot("ShippingMethod " + screenshot);
+        screenshot(screenshot + " ShippingMethod");
     }
     @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string})")
     public void selectShippingMethod_asSimpleList(String shippingMethod, String screenshot) {
-        $(".litecheckout__overlay--active").click();
         if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
         sleep(2000);
-        screenshot("ShippingMethod " + screenshot);
+        screenshot(screenshot + " ShippingMethod");
     }
     @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")
     public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod) {
@@ -95,10 +96,13 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @And("Выбираем способ оплаты {string} из выпадающего списка \\(скриншот {string})")
     public void selectPaymentMethod_asDropDownList(String paymentMethod, String screenshot) {
         if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
+            field_PaymentMethod.scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}");;
             field_PaymentMethod.click();
+            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").hover();
+            screenshot(screenshot + " PaymentMethod DropdownList");
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
             sleep(2000);
-            screenshot("PaymentMethod " + screenshot);
+            screenshot(screenshot + " PaymentMethod");
         }
     }
     @And("Выбираем способ оплаты {string} из обычного списка \\(скриншот {string})")
@@ -106,7 +110,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
             sleep(2000);
-            screenshot("PaymentMethod " + screenshot);
+            screenshot(screenshot + " PaymentMethod");
         }
     }
     @And("Ставим соглашения \\(проверяем на уникальность ID)")
@@ -122,7 +126,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public void placeOrder(String pageBreadcrumb, String screenshot) {
         button_PlaceOrder.click();
         sleep(2000);
-        screenshot("Success " + screenshot);
+        screenshot(screenshot + " Success ");
 
         softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
                 .as("Заказ не оформлен успешно!")

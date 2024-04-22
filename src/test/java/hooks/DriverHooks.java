@@ -18,7 +18,7 @@ public class DriverHooks {
 
     public DriverHooks() {super();}
 
-/*    @Before()
+    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
@@ -32,9 +32,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }*/
+    }
 
-    @Before() //под мобильное устройство
+    /*@Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "Nexus 5");
@@ -50,7 +50,7 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }
+    }*/
 
     @After
     public void closerBrowser() {

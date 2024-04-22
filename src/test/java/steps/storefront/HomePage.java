@@ -1,7 +1,7 @@
 package steps.storefront;
 
 import hooks.AssertUniqueIDOnPage;
-import steps.adminPanel.csCartPages.BasicPage;
+import steps.adminPanel.BasicPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.java.en.And;

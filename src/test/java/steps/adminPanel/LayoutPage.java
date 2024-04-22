@@ -1,4 +1,4 @@
-package steps.adminPanel.csCartPages;
+package steps.adminPanel;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
