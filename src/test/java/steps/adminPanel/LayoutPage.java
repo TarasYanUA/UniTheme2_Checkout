@@ -15,7 +15,7 @@ public class LayoutPage {
     private final SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public SelenideElement layoutTab_Checkout = $x("//a[text()='Оформить заказ']");
     public void navigateToBlockSettings(String blockName) {
-        $("div[data-ca-block-name='" + blockName + "']").$(".icon-cog").click();
+        $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties").click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
     }
     public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");

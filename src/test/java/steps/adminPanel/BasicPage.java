@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import steps.storefront.HomePage;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -20,12 +19,13 @@ public class BasicPage {
         switchTo().window(tabNumber);
     }
 
-    public SelenideElement button_Save = $(".btn.btn-primary.cm-submit");
     public static SelenideElement popupWindow = $(".ui-dialog-title");
-    public SelenideElement goTo_Storefront = $(".icon-shopping-cart");
-    public SelenideElement gearWheelOnTop = $(".dropdown-icon--tools");
-    private final SelenideElement menu_Design = $("#elm_menu_design");
-    private final SelenideElement sectionLayouts = $("#elm_menu_design_layouts");
+    private final SelenideElement button_Save = $(".btn.btn-primary.cm-submit");
+    private final SelenideElement button_ShowAdmPanel = $(".bp-bottom-button--logo");
+    private final SelenideElement goTo_Storefront = $(".bp-nav__item-text");
+    private final SelenideElement menu_Website = $("a[href='#primary_main_menu_1_6_body']");
+    private final SelenideElement menu_Themes = $("#website_themes");
+    private final SelenideElement sectionLayouts = $("a[href$='block_manager.manage']");
     private final SelenideElement menu_Administration = $("#elm_menu_administration");
     private final SelenideElement section_PaymentMethod = $("#elm_menu_administration_payment_methods");
     private final SelenideElement button_SaveMethod = $("input[value='Сохранить']");
@@ -33,16 +33,16 @@ public class BasicPage {
     private final SelenideElement section_ShippingMethod = $("#elm_menu_administration_shippings_taxes_shipping_methods");
 
 
-    @Given("Переходим на страницу \"Дизайн -- Макеты\"")
+    @Given("Переходим на страницу \"Веб-сайт -- Темы -- Макеты\"")
     public void navigateTo_LayoutPage() {
-        menu_Design.hover();
+        menu_Website.click();
+        menu_Themes.click();
         sectionLayouts.click();
     }
     @When("Переходим на витрину")
-    public HomePage navigateToStorefront_HomePage() {
-        goTo_Storefront.scrollTo().click();
-        focusBrowserTab(1);
-        return new HomePage();
+    public void navigateToStorefront_HomePage() {
+        button_ShowAdmPanel.click();
+        goTo_Storefront.click();
     }
 
     @And("Добавляем изображение способу оплаты {string}")
