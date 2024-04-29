@@ -7,30 +7,22 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import org.openqa.selenium.Alert;
 
 public class BasicPage {
     public BasicPage(){super();}
 
-    //Общие методы, что применяются во многих классах
-    public void focusBrowserTab(int tabNumber) {
-        getWebDriver().getWindowHandle();
-        switchTo().window(tabNumber);
-    }
-
     public static SelenideElement popupWindow = $(".ui-dialog-title");
     private final SelenideElement button_Save = $(".btn.btn-primary.cm-submit");
-    private final SelenideElement button_ShowAdmPanel = $(".bp-bottom-button--logo");
+    private final SelenideElement button_ShowAdminPanel = $(".bp-bottom-button--logo");
     private final SelenideElement goTo_Storefront = $(".bp-nav__item-text");
     private final SelenideElement menu_Website = $("a[href='#primary_main_menu_1_6_body']");
     private final SelenideElement menu_Themes = $("#website_themes");
     private final SelenideElement sectionLayouts = $("a[href$='block_manager.manage']");
-    private final SelenideElement menu_Administration = $("#elm_menu_administration");
-    private final SelenideElement section_PaymentMethod = $("#elm_menu_administration_payment_methods");
-    private final SelenideElement button_SaveMethod = $("input[value='Сохранить']");
-    private final SelenideElement section_ShippingAndTaxes = $("#elm_menu_administration_shippings_taxes");
-    private final SelenideElement section_ShippingMethod = $("#elm_menu_administration_shippings_taxes_shipping_methods");
+    private final SelenideElement menu_Settings = $("#administration");
+    private final SelenideElement section_PaymentMethod = $("a[href$='payments.manage'].administration-page__block");
+    private final SelenideElement button_SaveMethod = $(".ui-dialog-content input[value='Сохранить']");
+    private final SelenideElement section_ShippingMethod = $("a[href$='shippings.manage'].administration-page__block");
 
 
     @Given("Переходим на страницу \"Веб-сайт -- Темы -- Макеты\"")
@@ -41,13 +33,13 @@ public class BasicPage {
     }
     @When("Переходим на витрину")
     public void navigateToStorefront_HomePage() {
-        button_ShowAdmPanel.click();
+        button_ShowAdminPanel.click();
         goTo_Storefront.click();
     }
 
     @And("Добавляем изображение способу оплаты {string}")
     public void addImageToPaymentMethod(String paymentMethod) {
-        menu_Administration.hover();
+        menu_Settings.click();
         section_PaymentMethod.click();
         $x("//a[text()='" + paymentMethod + "']").click();
         BasicPage.popupWindow.shouldBe(Condition.exist);
@@ -61,8 +53,7 @@ public class BasicPage {
 
     @And("Добавляем изображение способу доставки {string}")
     public void addImageToShippingMethod(String shippingMethod) {
-        menu_Administration.hover();
-        section_ShippingAndTaxes.hover();
+        menu_Settings.click();
         section_ShippingMethod.click();
         $x("//div[@id='shippings_content']//a[text()='" + shippingMethod + "']").click();
         sleep(2000);

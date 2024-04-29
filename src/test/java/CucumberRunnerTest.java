@@ -6,7 +6,7 @@ import io.cucumber.junit.Cucumber;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"hooks", "steps"},
-        tags = "@10",  // or @20 or @30 or @40
+        tags = "@10 or @20 or @30 or @40",
         //tags = "@110 or @120 or @130 or @140",    //под мобильное устройство
         plugin = {"pretty", "html:target/cucumber_target.html", "json:target/cucumber.json"}
 )
