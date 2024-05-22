@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://abd-030f7f5281.demos.abt.team/admin.php?dispatch=abt__ut2.settings&selected_section=product_list";
+    public static final String BASIC_URL = "https://abd-d45d199b5d.demos.abt.team/admin.php?dispatch=abt__ut2.settings&selected_section=products";
 
     public DriverHooks() {super();}
 
@@ -25,7 +25,7 @@ public class DriverHooks {
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
         Configuration.holdBrowserOpen = false; //не закрываем браузер пока ведём разработку
         Configuration.screenshots = true; //делаем скриншоты при падении
-        Configuration.timeout = 5000;   //настройка таймаута
+        Configuration.timeout = 5000;   //настройка таймаута или Общая задержка
 
         SoftAssertions softAssertions = new SoftAssertions();
         CollectAssertMessages.setSoftAssertions(softAssertions);

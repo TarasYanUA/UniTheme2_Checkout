@@ -58,7 +58,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     }
     @And("Добавляем товар с опциями в корзину")
     public void addProductWithOptions() {
-        $(".ut2-btn__options").click();
+        $(".ut2-btn__options").hover().click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
         $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
         button_AddToCart_PopUp.click();
