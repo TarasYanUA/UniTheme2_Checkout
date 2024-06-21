@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class HomePage implements AssertUniqueIDOnPage {
     public HomePage(){super();}
 
+    private final SelenideElement button_CloseAdminBottomPanel = $("#bp_off_bottom_panel.bp-close");
     public SelenideElement cookie = $(".cm-btn-success");
     public static SelenideElement notification_close = $(".cm-notification-close");
     public SelenideElement header_MyAccount = $(".ut2-top-my-account .ut2-icon-outline-account-circle");
@@ -25,6 +26,9 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @And("Переключаемся на {string} язык интерфейса витрины")
     public void selectLanguage(String lang_RuEnAr) {
+        if(button_CloseAdminBottomPanel.isDisplayed()) {
+            button_CloseAdminBottomPanel.click();
+        }
         cookie.click();
         if(notification_close.exists())
             notification_close.click();
