@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://trs.test.abt.team/4181mvru/admin.php?dispatch=block_manager.manage&s_layout=7";
+    public static final String BASIC_URL = "https://trs.test.abt.team/4182ultru/admin.php?dispatch=themes.manage";
 
     public DriverHooks() {super();}
 
@@ -34,7 +34,7 @@ public class DriverHooks {
         $("#bp_off_bottom_panel").click();
     }
 
-    /*@Before() //под мобильное устройство
+/*    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "Nexus 5");

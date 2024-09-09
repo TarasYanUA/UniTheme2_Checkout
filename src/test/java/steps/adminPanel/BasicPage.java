@@ -21,7 +21,7 @@ public class BasicPage {
     private final SelenideElement sectionLayouts = $("a[href$='block_manager.manage']");
     private final SelenideElement menu_Settings = $("#administration");
     private final SelenideElement section_PaymentMethod = $("a[href$='payments.manage'].administration-page__block");
-    private final SelenideElement button_SaveMethod = $(".ui-dialog-content input[value='Сохранить']");
+    private final SelenideElement button_SavePopUpWindow = $(".ui-dialog-content input[value='Сохранить']");
     private final SelenideElement section_ShippingMethod = $("a[href$='shippings.manage'].administration-page__block");
 
 
@@ -48,7 +48,7 @@ public class BasicPage {
         sleep(1500);
         alert.sendKeys("https://dummyimage.com/50x50/09f/fff.png&text=a1");
         alert.accept();
-        button_SaveMethod.click();
+        button_SavePopUpWindow.click();
     }
 
     @And("Добавляем изображение способу доставки {string}")
@@ -62,6 +62,36 @@ public class BasicPage {
         sleep(1500);
         alert.sendKeys("https://dummyimage.com/50x50/09f/fff.png&text=b2");
         alert.accept();
+        button_Save.click();
+    }
+
+    @And("Удаляем изображение способу оплаты {string}")
+    public void deleteImageToPaymentMethod(String paymentMethod) {
+        menu_Settings.click();
+        section_PaymentMethod.click();
+        $x("//a[text()='" + paymentMethod + "']").click();
+        BasicPage.popupWindow.shouldBe(Condition.exist);
+        if($(".image-delete").exists()) {
+            $(".image-delete").hover().click();
+            Alert alert = webdriver().driver().switchTo().alert();
+            sleep(1500);
+            alert.accept();
+        }
+        button_SavePopUpWindow.click();
+    }
+
+    @And("Удаляем изображение способу доставки {string}")
+    public void deleteImageToShippingMethod(String shippingMethod) {
+        menu_Settings.click();
+        section_ShippingMethod.click();
+        $x("//div[@id='shippings_content']//a[text()='" + shippingMethod + "']").click();
+        sleep(2000);
+        if($(".image-delete").exists()) {
+            $(".image-delete").hover().click();
+            Alert alert = webdriver().driver().switchTo().alert();
+            sleep(1500);
+            alert.accept();
+        }
         button_Save.click();
     }
 }
