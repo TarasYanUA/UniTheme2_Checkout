@@ -6,9 +6,9 @@ import io.cucumber.junit.Cucumber;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"hooks", "steps"},
-        tags = "@40",  //Ultimate
-        //tags = "@110 or @120 or @130 or @140",    //Multi-Vendor
-        //tags = "@210 or @220 or @230 or @240",  // под мобильное устройство (Ultimate)
+        tags = "@Ult010 or @Ult020 or @Ult030 or @Ult040",  //Ultimate
+        //tags = "@MV110 or @MV120 or @MV130 or @MV140",    //Multi-Vendor
+        //tags = "@Mob210 or @Mob220 or @Mob230 or @Mob240",  // под мобильное устройство (Ultimate)
         plugin = {"pretty", "html:target/cucumber_target.html", "json:target/cucumber.json"}
 )
 public class CucumberRunnerTest {
