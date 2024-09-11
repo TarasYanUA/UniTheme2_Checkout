@@ -20,7 +20,7 @@ public class LayoutPage {
     }
     public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");
     public SelenideElement checkbox_DisplayAsDropDownList = $("input[id$='_properties_abt__ut2_as_select']");
-    public SelenideElement button_SaveBlockProperties = $("input[name=\"dispatch[block_manager.update_block]\"]");
+    public SelenideElement button_SaveBlockProperties = $("input[name='dispatch[block_manager.update_block]']");
 
     @And("Устанавливаем макет {string} по умолчанию")
     public void setLayout_asDefault(String layoutName){
@@ -31,6 +31,7 @@ public class LayoutPage {
             Selenide.sleep(1500);
         }
     }
+
     @And("Настраиваем блок {string} в виде выпадающего списка")
     public void setBlockAsDropDownList(String blockName) {
         layoutTab_Checkout.click();
@@ -48,5 +49,36 @@ public class LayoutPage {
         if(checkbox_DisplayAsDropDownList.isSelected())
             checkbox_DisplayAsDropDownList.click();
         button_SaveBlockProperties.click();
+    }
+
+
+    //Мобильное устройство
+    SelenideElement sideBar = $(".sidebar-toggle");
+
+    @And("Устанавливаем макет {string} по умолчанию \\(mobile)")
+    public void setLayout_asDefault__mobile(String layoutName){
+        sideBar.click();
+        $x("//a[contains(text(), '(" + layoutName + ")')]").click();
+        sideBar.click();
+
+        gearwheelOfActiveLayout.scrollTo().click();
+
+        //Selenide.executeJavaScript("arguments[0].click();", gearwheelOfActiveLayout);
+        //gearwheelOfActiveLayout.click();
+        if ($(".with-menu.active a[href*='block_manager.set_default_layout']").exists()) {
+            button_makeByDefault.click();
+            Selenide.sleep(1500);
+        }
+        sideBar.click();
+    }
+
+    @And("Настраиваем блок {string} в виде выпадающего списка \\(mobile)")
+    public void setBlockAsDropDownList__mobile(String blockName) {
+        layoutTab_Checkout.click();
+        navigateToBlockSettings(blockName);
+        Selenide.executeJavaScript("arguments[0].click();", button_SettingsOfTemplate);
+        if(!checkbox_DisplayAsDropDownList.isSelected())
+            checkbox_DisplayAsDropDownList.click();
+        Selenide.executeJavaScript("arguments[0].click();", button_SaveBlockProperties);
     }
 }
