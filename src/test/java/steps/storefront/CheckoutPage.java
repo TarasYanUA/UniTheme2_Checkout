@@ -71,7 +71,8 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     }
     @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string})")
     public void selectShippingMethod_asSimpleList(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
+        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
@@ -80,14 +81,16 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     }
     @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")
     public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod) {
-        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").exists()){
+        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
         }
     }
     @And("Выбираем способ доставки {string} для первого продавца из обычного списка")
     public void selectShippingMethodForFirstVendor_SimpleList(String shippingMethod) {
-        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").exists()){
+        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
         }
@@ -96,7 +99,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @And("Выбираем способ оплаты {string} из выпадающего списка \\(скриншот {string})")
     public void selectPaymentMethod_asDropDownList(String paymentMethod, String screenshot) {
         if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
-            field_PaymentMethod.scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}");;
+            field_PaymentMethod.scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}");
             field_PaymentMethod.click();
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").hover();
             screenshot(screenshot + " PaymentMethod DropdownList");
@@ -126,7 +129,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public void placeOrder(String pageBreadcrumb, String screenshot) {
         button_PlaceOrder.click();
         sleep(2000);
-        screenshot(screenshot + " Success ");
+        screenshot(screenshot + " Success");
 
         softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
                 .as("Заказ не оформлен успешно!")

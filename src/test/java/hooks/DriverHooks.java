@@ -14,43 +14,47 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://trs.test.abt.team/4172ultru/admin.php?dispatch=addons.manage";
+    public static final String BASIC_URL = "https://trs.test.abt.team/4182ultru/admin.php?dispatch=themes.manage";
 
     public DriverHooks() {super();}
 
-    @Before()
+/*    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
         Configuration.holdBrowserOpen = false; //не закрываем браузер пока ведём разработку
         Configuration.screenshots = true; //делаем скриншоты при падении
-        Configuration.timeout = 6000;   //настройка таймаута
+        Configuration.timeout = 5000;   //настройка таймаута или Общая задержка
 
         SoftAssertions softAssertions = new SoftAssertions();
         CollectAssertMessages.setSoftAssertions(softAssertions);
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }
+    }*/
 
-    /*@Before() //под мобильное устройство
+    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
-        mobileEmulation.put("deviceName", "Nexus 5");
+        mobileEmulation.put("deviceName", "iPhone 12 Pro");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
         WebDriver driver = new ChromeDriver(chromeOptions);
         WebDriverRunner.setWebDriver(driver);   // Устанавливаем созданный драйвер как текущий драйвер для Selenide
 
         open(BASIC_URL);
-        Configuration.timeout = 4000; //Общая задержка
-        Configuration.holdBrowserOpen = false; //не закрываем браузер пока ведём разработку
+        Configuration.timeout = 2000; //Общая задержка
         Configuration.screenshots = true; //делаем скриншоты при падении
+
+        SoftAssertions softAssertions = new SoftAssertions();
+        CollectAssertMessages.setSoftAssertions(softAssertions);
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }*/
+        $(".close.cm-notification-close").click();
+        Selenide.sleep(1000);
+    }
 
     @After
     public void closerBrowser() {

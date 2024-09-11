@@ -6,8 +6,10 @@ import io.cucumber.junit.Cucumber;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"hooks", "steps"},
-        tags = "@30",  // or @20 or @30 or @40
-        //tags = "@110 or @120 or @130 or @140",    //под мобильное устройство
+        //tags = "@Ult010 or @Ult020 or @Ult030 or @Ult040",  //Ultimate
+        //tags = "@MV110 or @MV120 or @MV130 or @MV140",    //Multi-Vendor
+        tags = "@Mob210",
+        //tags = "@Mob210 or @Mob220 or @Mob230 or @Mob240",  // под мобильное устройство (Ultimate)
         plugin = {"pretty", "html:target/cucumber_target.html", "json:target/cucumber.json"}
 )
 public class CucumberRunnerTest {
