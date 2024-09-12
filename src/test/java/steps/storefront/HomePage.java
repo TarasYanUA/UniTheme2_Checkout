@@ -117,6 +117,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     public void addProductWithOptions__mobile() {
         executeJavaScript("document.querySelector('.ut2-btn__options').scrollIntoView();");
         executeJavaScript("arguments[0].click();", $(".ut2-btn__options"));
+        sleep(1000);
         $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
         sleep(2000);
         bottomPopUp_AddToCart.click();
