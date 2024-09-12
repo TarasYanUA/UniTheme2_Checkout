@@ -153,6 +153,20 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
             screenshot(screenshot + " ShippingMethod DropdownList");
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
+        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
+        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        screenshot(screenshot + " ShippingMethod");
+    }
+
+    @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string}) \\(mobile)")
+    public void selectShippingMethod_asSimpleList__mobile(String shippingMethod, String screenshot) {
+        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]/../../../../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
+            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
+        }
+        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
+        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        sleep(2000);
         screenshot(screenshot + " ShippingMethod");
     }
 }

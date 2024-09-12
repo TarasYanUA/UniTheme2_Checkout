@@ -15,7 +15,8 @@ public class LayoutPage {
     private final SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public SelenideElement layoutTab_Checkout = $x("//a[text()='Оформить заказ']");
     public void navigateToBlockSettings(String blockName) {
-        $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties").click();
+        $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties")
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
     }
     public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");
@@ -41,6 +42,7 @@ public class LayoutPage {
             checkbox_DisplayAsDropDownList.click();
         button_SaveBlockProperties.click();
     }
+
     @And("Настраиваем блок {string} в виде обычного списка")
     public void setBlockAsSimpleList(String blockName) {
         layoutTab_Checkout.click();
@@ -80,5 +82,16 @@ public class LayoutPage {
         if(!checkbox_DisplayAsDropDownList.isSelected())
             checkbox_DisplayAsDropDownList.click();
         Selenide.executeJavaScript("arguments[0].click();", button_SaveBlockProperties);
+    }
+
+    @And("Настраиваем блок {string} в виде обычного списка \\(mobile)")
+    public void setBlockAsSimpleList__mobile(String blockName) {
+        layoutTab_Checkout.click();
+        navigateToBlockSettings(blockName);
+        Selenide.executeJavaScript("arguments[0].click();", button_SettingsOfTemplate);
+        if(checkbox_DisplayAsDropDownList.isSelected())
+            checkbox_DisplayAsDropDownList.click();
+        Selenide.executeJavaScript("arguments[0].click();", button_SaveBlockProperties);
+
     }
 }
