@@ -14,14 +14,15 @@ public class LayoutPage {
     private final SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
     private final SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     public SelenideElement layoutTab_Checkout = $x("//a[text()='Оформить заказ']");
+    public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");
+    public SelenideElement checkbox_DisplayAsDropDownList = $("input[id$='_properties_abt__ut2_as_select']");
+    public SelenideElement button_SaveBlockProperties = $("input[name='dispatch[block_manager.update_block]']");
+
     public void navigateToBlockSettings(String blockName) {
         $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties")
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
     }
-    public SelenideElement button_SettingsOfTemplate = $("a[id^='sw_case_settings_']");
-    public SelenideElement checkbox_DisplayAsDropDownList = $("input[id$='_properties_abt__ut2_as_select']");
-    public SelenideElement button_SaveBlockProperties = $("input[name='dispatch[block_manager.update_block]']");
 
     @And("Устанавливаем макет {string} по умолчанию")
     public void setLayout_asDefault(String layoutName){
@@ -55,25 +56,6 @@ public class LayoutPage {
 
 
     //Мобильное устройство
-    SelenideElement sideBar = $(".sidebar-toggle");
-
-    @And("Устанавливаем макет {string} по умолчанию \\(mobile)")
-    public void setLayout_asDefault__mobile(String layoutName){
-        sideBar.click();
-        $x("//a[contains(text(), '(" + layoutName + ")')]").click();
-        sideBar.click();
-
-        gearwheelOfActiveLayout.scrollTo().click();
-
-        //Selenide.executeJavaScript("arguments[0].click();", gearwheelOfActiveLayout);
-        //gearwheelOfActiveLayout.click();
-        if ($(".with-menu.active a[href*='block_manager.set_default_layout']").exists()) {
-            button_makeByDefault.click();
-            Selenide.sleep(1500);
-        }
-        sideBar.click();
-    }
-
     @And("Настраиваем блок {string} в виде выпадающего списка \\(mobile)")
     public void setBlockAsDropDownList__mobile(String blockName) {
         layoutTab_Checkout.click();
