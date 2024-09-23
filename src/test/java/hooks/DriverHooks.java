@@ -1,9 +1,9 @@
 package hooks;
 
 import com.codeborne.selenide.*;
+import org.assertj.core.api.SoftAssertions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -42,7 +42,6 @@ public class DriverHooks {
         chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
         WebDriver driver = new ChromeDriver(chromeOptions);
         WebDriverRunner.setWebDriver(driver);   // Устанавливаем созданный драйвер как текущий драйвер для Selenide
-
         open(BASIC_URL);
         Configuration.timeout = 2000; //Общая задержка
         Configuration.screenshots = true; //делаем скриншоты при падении
