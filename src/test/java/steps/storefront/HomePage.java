@@ -16,7 +16,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     public SelenideElement cookie = $(".cm-btn-success");
     public static SelenideElement notification_close = $(".cm-notification-close");
     public SelenideElement header_MyAccount = $(".ut2-top-my-account .ut2-icon-outline-account-circle");
-    public SelenideElement header_Cart = $(".ut2-top-cart-content .ty-hand");
+    public SelenideElement header_Cart = $(".ut2-top-cart-content .ty-hand i");
     public SelenideElement button_LogOut = $(".ut2-top-my-account a[href*='dispatch=auth.logout']");
     public SelenideElement button_SignIn = $(".ut2-top-my-account a[href*='login']");
     public SelenideElement button_SignIn_Popup = $("button[name='dispatch[auth.login]']");
@@ -60,7 +60,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     @And("Переходим на страницу категории {string} {string} \\(проверяем на уникальность ID)")
     public void navigateTo_CategoryPage(String mainCategory, String subCategory) {
         button_MainMenuCategories.click();
-        $("li[class='ty-menu__item cm-menu-item-responsive first-lvl ty-menu-item__" + mainCategory + "']").hover();
+        $(".ut2-menu__item.ty-menu-item__" + mainCategory).hover();
         $x("//li[contains(@class, 'ty-menu-item__" + mainCategory + "')]//a[contains(@href, '" + subCategory + "/')]").click();
         assertUniqueIDOnPage();
     }
@@ -86,6 +86,7 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @And("Переходим на страницу чекаута \\(проверяем на уникальность ID)")
     public void navigateTo_CheckoutPage() {
+        executeJavaScript("window.scrollTo(0, 0);");
         header_Cart.click();
         button_Checkout.click();
         assertUniqueIDOnPage();

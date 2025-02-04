@@ -72,7 +72,8 @@ public class BasicPage {
         $x("//a[text()='" + paymentMethod + "']").click();
         BasicPage.popupWindow.shouldBe(Condition.exist);
         if($(".image-delete").exists()) {
-            $(".image-delete").hover().click();
+            $(".image-delete").parent().hover();
+            $(".image-delete").click();
             Alert alert = webdriver().driver().switchTo().alert();
             sleep(1500);
             alert.accept();
@@ -87,7 +88,8 @@ public class BasicPage {
         $x("//div[@id='shippings_content']//a[text()='" + shippingMethod + "']").click();
         sleep(2000);
         if($(".image-delete").exists()) {
-            $(".image-delete").hover().click();
+            $(".image-delete").parent().hover();
+            $(".image-delete").click();
             Alert alert = webdriver().driver().switchTo().alert();
             sleep(1500);
             alert.accept();
