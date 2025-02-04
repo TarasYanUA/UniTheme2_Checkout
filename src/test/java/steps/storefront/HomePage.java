@@ -101,6 +101,13 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @Given("Разавторизоваться на витрине")
     public void logoutOnStorefront() {
+        try {
+            if (notification_close.exists()) {
+                notification_close.click();
+            }
+        } catch (Exception e) {
+            System.out.println("Notification close button not found or could not be clicked: " + e.getMessage());
+        }
         flyMenu_button.click();
         executeJavaScript("arguments[0].click();", flyMenu_Logout);
     }

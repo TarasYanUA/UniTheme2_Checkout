@@ -4,26 +4,25 @@ import com.codeborne.selenide.*;
 import org.assertj.core.api.SoftAssertions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://trs.test.abt.team/4182ultru/admin.php?dispatch=themes.manage";
+    public static final String BASIC_URL = "https://trs.test.abt.team/4183ultru/admin.php?dispatch=themes.manage";
 
     public DriverHooks() {super();}
 
-/*    @Before()
+    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
-        Configuration.holdBrowserOpen = false; //не закрываем браузер пока ведём разработку
         Configuration.screenshots = true; //делаем скриншоты при падении
         Configuration.timeout = 5000;   //настройка таймаута или Общая задержка
 
@@ -32,9 +31,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }*/
+    }
 
-    @Before() //под мобильное устройство
+    /*@Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "iPhone 12 Pro");
@@ -53,7 +52,7 @@ public class DriverHooks {
         $("#bp_off_bottom_panel").click();
         $(".close.cm-notification-close").click();
         Selenide.sleep(1000);
-    }
+    }*/
 
     @After
     public void closerBrowser() {
