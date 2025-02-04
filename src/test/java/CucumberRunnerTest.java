@@ -6,7 +6,7 @@ import io.cucumber.junit.Cucumber;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"hooks", "steps"},
-        tags = "@Ult010",  //Ultimate
+        tags = "@Ult010 or @Ult020 or @Ult030 or @Ult040",  //Ultimate
         //tags = "@MV110 or @MV120 or @MV130 or @MV140",    //Multi-Vendor
         //tags = "@Mob210 or @Mob220",
         //tags = "@Mob210 or @Mob220",  // под мобильное устройство (Ultimate)

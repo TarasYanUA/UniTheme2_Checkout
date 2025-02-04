@@ -2,14 +2,12 @@ package steps.adminPanel;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
 import static com.codeborne.selenide.Selenide.*;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.interactions.Actions;
 
 public class BasicPage {
     public BasicPage(){super();}
