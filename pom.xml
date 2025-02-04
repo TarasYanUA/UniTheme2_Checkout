@@ -20,19 +20,19 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.5.1</version>
+            <version>7.7.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.19.0</version>
+            <version>7.20.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.19.0</version>
+            <version>7.20.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -51,13 +51,13 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.26.3</version>
+            <version>3.27.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.16</version>
         </dependency>
     </dependencies>
 
@@ -71,7 +71,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
                     </execution>
@@ -79,7 +78,7 @@
                 <configuration>
                     <testSourceDirectory>src/test/resources/features</testSourceDirectory>
                     <includes>
-                        <include>DropdownList_Ult_Test.feature</include>
+                        <include>**/*.feature</include>
                     </includes>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"

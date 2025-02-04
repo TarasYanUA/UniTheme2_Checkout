@@ -10,6 +10,8 @@ import io.cucumber.java.en.And;
 import static com.codeborne.selenide.Selenide.*;
 import org.assertj.core.api.SoftAssertions;
 
+import java.time.Duration;
+
 public class CheckoutPage implements AssertUniqueIDOnPage {
     public CheckoutPage(){super();}
     SoftAssertions softAssertions = CollectAssertMessages.getSoftAssertions();
@@ -32,8 +34,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.click();
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
-        HomePage.notification_close.shouldBe(Condition.visible);
-        sleep(1000);
+        HomePage.notification_close.shouldBe(Condition.visible, Duration.ofSeconds(5));
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
