@@ -14,11 +14,11 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://trs.test.abt.team/4183ultru/admin.php?dispatch=themes.manage";
+    public static final String BASIC_URL = "https://abd-174c7b9813.demos.abt.team/admin.php?dispatch=addons.manage";
 
     public DriverHooks() {super();}
 
-    @Before()
+/*    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
@@ -31,9 +31,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }
+    }*/
 
-    /*@Before() //под мобильное устройство
+    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "iPhone 12 Pro");
@@ -50,9 +50,10 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-        $(".close.cm-notification-close").click();
+        if ($(".close.cm-notification-close").exists())
+            $(".close.cm-notification-close").click();
         Selenide.sleep(1000);
-    }*/
+    }
 
     @After
     public void closerBrowser() {

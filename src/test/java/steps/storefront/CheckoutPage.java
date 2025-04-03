@@ -135,13 +135,13 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         assertUniqueIDOnPage();
     }
 
-    @Then("Завершаем оформление заказа и проверяем, что мы на странице {string} \\(скриншот {string})")
-    public void placeOrder(String pageBreadcrumb, String screenshot) {
+    @Then("Завершаем оформление заказа и проверяем, что заказ оформлен успешно \\(скриншот {string})")
+    public void placeOrder(String screenshot) {
         button_PlaceOrder.click();
         sleep(2000);
         screenshot(screenshot + " Success");
 
-        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
+        softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
                 .as("Заказ не оформлен успешно!")
                 .isTrue();
         assertUniqueIDOnPage();

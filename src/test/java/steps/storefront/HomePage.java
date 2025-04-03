@@ -7,6 +7,8 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.java.en.And;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
 public class HomePage implements AssertUniqueIDOnPage {
@@ -129,7 +131,7 @@ public class HomePage implements AssertUniqueIDOnPage {
         $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
         sleep(2000);
         bottomPopUp_AddToCart.click();
-        $(".notification-body-extended").shouldBe(Condition.visible);
+        $(".notification-body-extended").shouldBe(Condition.visible, Duration.ofSeconds(10));
         bottomPopUp_Checkout.click();
     }
 }
