@@ -2,23 +2,24 @@ package hooks;
 
 import com.codeborne.selenide.*;
 import org.assertj.core.api.SoftAssertions;
+import static com.codeborne.selenide.Selenide.*;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import java.time.Duration;
 
+//НЕ УДАЛЯТЬ
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.*;
-
 public class DriverHooks {
-    public static final String BASIC_URL = "https://abd-174c7b9813.demos.abt.team/admin.php?dispatch=addons.manage";
+    public static final String BASIC_URL = "https://trs.test.abt.team/4183ultru/admin.php?dispatch=addons.manage";
 
     public DriverHooks() {super();}
 
-/*    @Before()
+    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
@@ -31,9 +32,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }*/
+    }
 
-    @Before() //под мобильное устройство
+/*    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "iPhone 12 Pro");
@@ -53,7 +54,7 @@ public class DriverHooks {
         if ($(".close.cm-notification-close").exists())
             $(".close.cm-notification-close").click();
         Selenide.sleep(1000);
-    }
+    }*/
 
     @After
     public void closerBrowser() {
@@ -66,5 +67,10 @@ public class DriverHooks {
         }
 
         closeWebDriver();
+    }
+
+    public static void waitForSpinnerDisappear() {
+        $("div#ajax_loading_box[style=\"display: block;\"]").shouldBe(Condition.disappear, Duration.ofSeconds(10));
+        Selenide.sleep(1000);
     }
 }

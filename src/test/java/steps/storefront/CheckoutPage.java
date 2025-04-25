@@ -2,6 +2,7 @@ package steps.storefront;
 
 import hooks.AssertUniqueIDOnPage;
 import hooks.CollectAssertMessages;
+import hooks.DriverHooks;
 import io.cucumber.java.en.Then;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -34,6 +35,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.click();
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
+        DriverHooks.waitForSpinnerDisappear();
         HomePage.notification_close.shouldBe(Condition.visible, Duration.ofSeconds(5));
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
@@ -68,8 +70,10 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
             selectShippingMethod.click();
             screenshot(screenshot + " ShippingMethod DropdownList");
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
+            DriverHooks.waitForSpinnerDisappear();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
+        DriverHooks.waitForSpinnerDisappear();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
         screenshot(screenshot + " ShippingMethod");
     }
@@ -81,7 +85,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
-        sleep(2000);
+        DriverHooks.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 
@@ -91,6 +95,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
+            DriverHooks.waitForSpinnerDisappear();
         }
     }
 
@@ -100,6 +105,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
+            DriverHooks.waitForSpinnerDisappear();
         }
     }
 
@@ -111,7 +117,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").hover();
             screenshot(screenshot + " PaymentMethod DropdownList");
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
+            DriverHooks.waitForSpinnerDisappear();
             screenshot(screenshot + " PaymentMethod");
         }
     }
@@ -120,7 +126,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public void selectPaymentMethod_asSimpleList(String paymentMethod, String screenshot) {
         if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
             $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
+            DriverHooks.waitForSpinnerDisappear();
             screenshot(screenshot + " PaymentMethod");
         }
     }
@@ -138,12 +144,13 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @Then("Завершаем оформление заказа и проверяем, что заказ оформлен успешно \\(скриншот {string})")
     public void placeOrder(String screenshot) {
         button_PlaceOrder.click();
-        sleep(2000);
-        screenshot(screenshot + " Success");
+        DriverHooks.waitForSpinnerDisappear();
 
         softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
                 .as("Заказ не оформлен успешно!")
                 .isTrue();
+        sleep(2000);
+        screenshot(screenshot + " Success");
         assertUniqueIDOnPage();
     }
 
