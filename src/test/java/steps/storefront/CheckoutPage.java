@@ -2,7 +2,6 @@ package steps.storefront;
 
 import hooks.AssertUniqueIDOnPage;
 import hooks.CollectAssertMessages;
-import hooks.DriverHooks;
 import io.cucumber.java.en.Then;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -23,7 +22,6 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public SelenideElement selectShippingMethod = $(".b--ship-way__opted__text.b--pay-ship__opted__text");
     public SelenideElement field_Country = $("#litecheckout_country");
     public SelenideElement field_City = $(".litecheckout__input--selectable--like-field");
-    public SelenideElement field_PaymentMethod = $(".b--pay-way__opted__text__title.b--pay-ship__opted__text__title");
     public SelenideElement agreement_TermsAndCondition = $("input[id^='id_accept_terms']");
     public SelenideElement agreement_CheckoutPlaceOrder = $("input[id^='gdpr_agreements_checkout_place_order_']");
     public SelenideElement agreement_CsCart = $("input[id^='product_agreements_']");
@@ -35,7 +33,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.click();
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         HomePage.notification_close.shouldBe(Condition.visible, Duration.ofSeconds(5));
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
@@ -58,7 +56,6 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_Country.click();
         field_Country.selectOption(country);
         field_City.click();
-        field_City.clear();
         field_City.sendKeys(city);
         $(".litecheckout__overlay--active").click();
         $(".litecheckout__overlay--active").shouldBe(Condition.disappear);
@@ -66,26 +63,25 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
 
     @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи \\(скриншот {string})")
     public void selectShippingMethod_asDropDownList(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
+        if (!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
             selectShippingMethod.click();
             screenshot(screenshot + " ShippingMethod DropdownList");
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
-            DriverHooks.waitForSpinnerDisappear();
+            UtilsStorefront.waitForSpinnerDisappear();
         }
         $x("(//label[contains(@for, 'store_')])[3]").click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
         screenshot(screenshot + " ShippingMethod");
     }
 
     @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string})")
     public void selectShippingMethod_asSimpleList(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
-            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
-        }
+        UtilsStorefront.selectShippingMethodFromList(shippingMethod,
+                "//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]",
+                screenshot);
         $x("(//label[contains(@for, 'store_')])[3]").click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 
@@ -95,7 +91,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
-            DriverHooks.waitForSpinnerDisappear();
+            UtilsStorefront.waitForSpinnerDisappear();
         }
     }
 
@@ -105,30 +101,19 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 + shippingMethod + "')]").exists()){
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
-            DriverHooks.waitForSpinnerDisappear();
+            UtilsStorefront.waitForSpinnerDisappear();
         }
     }
 
     @And("Выбираем способ оплаты {string} из выпадающего списка \\(скриншот {string})")
     public void selectPaymentMethod_asDropDownList(String paymentMethod, String screenshot) {
-        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
-            field_PaymentMethod.scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}");
-            field_PaymentMethod.click();
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").hover();
-            screenshot(screenshot + " PaymentMethod DropdownList");
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            DriverHooks.waitForSpinnerDisappear();
-            screenshot(screenshot + " PaymentMethod");
-        }
+        UtilsStorefront.selectPaymentMethodFromDropDown(paymentMethod, screenshot);
     }
 
     @And("Выбираем способ оплаты {string} из обычного списка \\(скриншот {string})")
     public void selectPaymentMethod_asSimpleList(String paymentMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            DriverHooks.waitForSpinnerDisappear();
-            screenshot(screenshot + " PaymentMethod");
-        }
+        String xpath = "//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]";
+        UtilsStorefront.selectPaymentMethodFromSimpleList(paymentMethod, xpath, screenshot);
     }
 
     @And("Ставим соглашения \\(проверяем на уникальность ID)")
@@ -144,7 +129,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @Then("Завершаем оформление заказа и проверяем, что заказ оформлен успешно \\(скриншот {string})")
     public void placeOrder(String screenshot) {
         button_PlaceOrder.click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         sleep(2000);
 
         softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
@@ -165,7 +150,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         sleep(2000);
         screenshot(screenshot + "Pickup points");
         $x("(//label[contains(@for, 'store_')][3])").click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 
@@ -179,7 +164,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         sleep(2000);
         screenshot(screenshot + "Pickup points");
         $x("(//label[contains(@for, 'store_')][3])").click();
-        DriverHooks.waitForSpinnerDisappear();
+        UtilsStorefront.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 }
