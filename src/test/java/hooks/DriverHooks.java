@@ -19,7 +19,7 @@ public class DriverHooks {
 
     public DriverHooks() {super();}
 
-    @Before()
+/*    @Before()
     public void openBrowser() {
         Configuration.browser = "chrome";
         open(BASIC_URL);
@@ -32,9 +32,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }
+    }*/
 
-/*    @Before() //под мобильное устройство
+    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "iPhone 12 Pro");
@@ -54,7 +54,7 @@ public class DriverHooks {
         if ($(".close.cm-notification-close").exists())
             $(".close.cm-notification-close").click();
         Selenide.sleep(1000);
-    }*/
+    }
 
     @After
     public void closerBrowser() {

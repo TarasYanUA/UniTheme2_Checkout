@@ -145,11 +145,11 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     public void placeOrder(String screenshot) {
         button_PlaceOrder.click();
         DriverHooks.waitForSpinnerDisappear();
+        sleep(2000);
 
         softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
                 .as("Заказ не оформлен успешно!")
                 .isTrue();
-        sleep(2000);
         screenshot(screenshot + " Success");
         assertUniqueIDOnPage();
     }
@@ -161,8 +161,11 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
             screenshot(screenshot + " ShippingMethod DropdownList");
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
-        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
-        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        $(".pickup__open-pickupups-btn").click();   //Кнопка "Выбрать из списка" (отделения)
+        sleep(2000);
+        screenshot(screenshot + "Pickup points");
+        $x("(//label[contains(@for, 'store_')][3])").click();
+        DriverHooks.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 
@@ -172,9 +175,11 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 + shippingMethod + "')]/../../../../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
-        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
-        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        $(".pickup__open-pickupups-btn").click();   //Кнопка "Выбрать из списка" (отделения)
         sleep(2000);
+        screenshot(screenshot + "Pickup points");
+        $x("(//label[contains(@for, 'store_')][3])").click();
+        DriverHooks.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 }
