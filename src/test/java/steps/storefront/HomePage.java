@@ -16,7 +16,6 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     private final SelenideElement button_CloseAdminBottomPanel = $("#bp_off_bottom_panel.bp-close");
     public SelenideElement cookie = $(".cm-btn-success");
-    public static SelenideElement notification_close = $(".cm-notification-close");
     public SelenideElement header_MyAccount = $(".ut2-top-my-account .ut2-icon-outline-account-circle");
     public SelenideElement header_Cart = $(".ut2-top-cart-content .ty-hand i");
     public SelenideElement button_LogOut = $(".ut2-top-my-account a[href*='dispatch=auth.logout']");
@@ -33,8 +32,7 @@ public class HomePage implements AssertUniqueIDOnPage {
             button_CloseAdminBottomPanel.click();
         }
         cookie.click();
-        if(notification_close.exists())
-            notification_close.click();
+        UtilsStorefront.safeCloseNotifications();
         $("a[id*='_wrap_language_']").hover().click();
         $(".ty-select-block__list-item a[data-ca-name='" + lang_RuEnAr + "']").click();
     }
@@ -79,7 +77,7 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @And("Добавляем товар с вариациями в корзину")
     public void addProductWithVariations() {
-        $("a[id^='opener_ut2_select_variation']").click();
+        $("a[id^='opener_ut2_select_variation']").scrollIntoCenter().click();
         BasicPage.popupWindow.shouldBe(Condition.visible);
         button_AddToCart_PopUp.click();
         $(".notification-body-extended").shouldBe(Condition.visible);
@@ -104,13 +102,7 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @Given("Разавторизоваться на витрине")
     public void logoutOnStorefront() {
-        try {
-            if (notification_close.exists()) {
-                notification_close.click();
-            }
-        } catch (Exception e) {
-            System.out.println("Notification close button not found or could not be clicked: " + e.getMessage());
-        }
+        UtilsStorefront.safeCloseNotifications();
         flyMenu_button.click();
         executeJavaScript("arguments[0].click();", flyMenu_Logout);
     }
@@ -125,8 +117,7 @@ public class HomePage implements AssertUniqueIDOnPage {
 
     @And("Добавляем товар с опциями в корзину и переходим на страницу чекаута")
     public void addProductWithOptions__mobile() {
-        executeJavaScript("document.querySelector('.ut2-btn__options').scrollIntoView();");
-        executeJavaScript("arguments[0].click();", $(".ut2-btn__options"));
+        $(".ut2-btn__options").scrollIntoCenter().click();
         sleep(1000);
         $("input[id^='option_svw']").click();   //Ставим чекбокс у опции товара
         sleep(2000);

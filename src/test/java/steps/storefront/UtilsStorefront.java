@@ -5,11 +5,23 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.*;
 
 public class UtilsStorefront {
 
+    // Метод для безопасного закрытия уведомлений
+    public static void safeCloseNotifications() {
+        SelenideElement notification = $(".cm-notification-close");
+        if (notification.exists()) {
+            try {
+                notification.click();
+            } catch (Exception e) {
+                System.out.println("Notification close button not found or could not be clicked: " + e.getMessage());
+            }
+        }
+    }
+
+    // Метод на ожидание того, что спиннер исчез
     public static void waitForSpinnerDisappear() {
         $("div#ajax_loading_box[style=\"display: block;\"]").shouldBe(Condition.disappear, Duration.ofSeconds(10));
         Selenide.sleep(1000);
@@ -24,32 +36,19 @@ public class UtilsStorefront {
         }
     }
 
-    // Метод для выбора способа доставки из списка и ожидания исчезновения спиннера
-    public static void selectShippingMethodFromList(String shippingMethod, String xpath, String screenshot) {
-        String formattedXpath = xpath.replace("{shippingMethod}", shippingMethod);
+    public static void selectMethodFromList(String methodName, String xpathTemplate, String screenshotName) {
+        String formattedXpath = xpathTemplate.replace("{methodName}", methodName);
         clickIfNotSelected($x(formattedXpath));
         waitForSpinnerDisappear();
-        screenshot(screenshot + " ShippingMethod");
+        screenshot(screenshotName);
     }
 
-    // Метод для выбора способа оплаты из выпадающего списка
-    public static void selectPaymentMethodFromDropDown(String paymentMethod, String screenshot) {
-        String xpath = "//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]";
-        if (!$x(xpath).isDisplayed()) {
-            $(".b--pay-way__opted__text__title.b--pay-ship__opted__text__title").scrollIntoCenter().click();
-            $x(xpath).hover();
-            screenshot(screenshot + " PaymentMethod DropdownList");
-            $x(xpath).click();
-            waitForSpinnerDisappear();
-            screenshot(screenshot + " PaymentMethod");
-        }
-    }
-
-    // Метод для выбора способа оплаты из обычного списка
-    public static void selectPaymentMethodFromSimpleList(String paymentMethod, String xpath, String screenshot) {
-        if (!$x(xpath).exists())
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
+    public static void selectMethodFromDropDown(String methodName, String methodXpath, String dropdownSelector, String screenshotName) {
+        String formattedXpath = methodXpath.replace("{methodName}", methodName);
+        $(dropdownSelector).scrollIntoCenter().click();
+        screenshot(screenshotName + " DropdownList");
+        executeJavaScript("arguments[0].click();", $x(formattedXpath));
         waitForSpinnerDisappear();
-        screenshot(screenshot + " PaymentMethod");
+        screenshot(screenshotName);
     }
 }

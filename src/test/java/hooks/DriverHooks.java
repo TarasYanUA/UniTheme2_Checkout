@@ -24,7 +24,7 @@ public class DriverHooks {
         open(BASIC_URL);
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
         Configuration.screenshots = true; //делаем скриншоты при падении
-        Configuration.timeout = 5000;   //настройка таймаута или Общая задержка
+        Configuration.savePageSource = false; //не создавать html файлы при создании скриншотов
 
         SoftAssertions softAssertions = new SoftAssertions();
         CollectAssertMessages.setSoftAssertions(softAssertions);
