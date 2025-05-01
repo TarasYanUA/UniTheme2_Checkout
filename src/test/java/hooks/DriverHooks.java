@@ -20,7 +20,7 @@ public class DriverHooks {
 
     @Before()
     public void openBrowser() {
-        Configuration.browser = "chrome";
+        Configuration.browser = "edge";
         open(BASIC_URL);
         WebDriverRunner.getWebDriver().manage().window().maximize(); //окно браузера на весь экран
         Configuration.screenshots = true; //делаем скриншоты при падении

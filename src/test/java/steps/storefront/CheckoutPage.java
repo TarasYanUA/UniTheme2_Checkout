@@ -54,7 +54,7 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
 
     @And("Выбираем страну и город доставки: {string}, {string}")
     public void selectCountryAndCity(String country, String city) {
-        field_Country.click();
+        field_Country.scrollIntoCenter().click();
         field_Country.selectOption(country);
         field_City.click();
         field_City.sendKeys(city);
@@ -65,22 +65,20 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
     @And("Выбираем способ {string} {string} из обычного списка \\(скриншот {string})")
     public void selectMethodFromSimpleList(String methodType, String methodName, String screenshot) {
         String methodXpath = "";
-        String screenshotName = screenshot + " " + methodType;
 
         if (methodType.equals("доставки")) {
             methodXpath = "//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
             // Выбираем пункт выдачи
             $$x("//label[contains(@for, 'store_')]").get(2).click();
             UtilsStorefront.waitForSpinnerDisappear();
-            screenshot(screenshotName);
         } else if (methodType.equals("оплаты")) {
-            methodXpath = "//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '{methodName}')]";
+            methodXpath = "//div[contains(@class, 'b--pay-way__unit__text b--pay-ship__unit__text')]//div[contains(text(), '{methodName}')]";
         }
 
         UtilsStorefront.selectMethodFromList(
                 methodName,
                 methodXpath,
-                screenshotName
+                screenshot + " Способ " + methodType
         );
     }
 
@@ -92,6 +90,9 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         if (methodType.equals("доставки")) {
             methodXpath = "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
             dropdownSelector = ".b--ship-way__vendor-_0 .b--pay-ship__select";
+            // Выбираем пункт выдачи
+            $$x("//label[contains(@for, 'store_')]").get(2).click();
+            UtilsStorefront.waitForSpinnerDisappear();
         } else if (methodType.equals("оплаты")) {
             methodXpath = "//div[@class='litecheckout__shipping-method__title'][contains(text(), '{methodName}')]";
             dropdownSelector = ".b--pay-way__opted__text__title.b--pay-ship__opted__text__title";
@@ -103,13 +104,6 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
                 dropdownSelector,
                 screenshot + " Способ " + methodType
         );
-    }
-
-    @And("Выбираем пункт выдачи для способа доставки")
-    public void selectPickUpPoint() {
-        $$x("//label[contains(@for, 'store_')]").get(2).click();
-        UtilsStorefront.waitForSpinnerDisappear();
-        $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
     }
 
     @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")

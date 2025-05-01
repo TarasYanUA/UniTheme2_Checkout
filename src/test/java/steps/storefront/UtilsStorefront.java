@@ -1,22 +1,27 @@
 package steps.storefront;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
 public class UtilsStorefront {
 
-    // Метод для безопасного закрытия уведомлений
+    // Метод для закрытия уведомлений
     public static void safeCloseNotifications() {
-        SelenideElement notification = $(".cm-notification-close");
-        if (notification.exists()) {
+        sleep(2000);
+        while ($(".cm-notification-close").exists()) {
             try {
-                notification.click();
+                SelenideElement notification = $(".cm-notification-close");
+                if (notification.exists()) { // ещё раз проверяем существование элемента перед кликом
+                    notification.click();
+                    sleep(300);
+                }
             } catch (Exception e) {
-                System.out.println("Notification close button not found or could not be clicked: " + e.getMessage());
+                System.out.println("Ошибка при закрытии уведомления: " + e.getMessage());
+                break;
             }
         }
     }
@@ -24,21 +29,13 @@ public class UtilsStorefront {
     // Метод на ожидание того, что спиннер исчез
     public static void waitForSpinnerDisappear() {
         $("div#ajax_loading_box[style=\"display: block;\"]").shouldBe(Condition.disappear, Duration.ofSeconds(10));
-        Selenide.sleep(1000);
+        sleep(1000);
     }
 
-    // Универсальный метод для клика по элементу с проверкой его существования
-    public static void clickIfNotSelected(SelenideElement element) {
-        if (!element.exists() && element.isDisplayed()) {
-            element.click();
-        } else {
-            System.out.println("Element not found or not visible: " + element);
-        }
-    }
-
-    public static void selectMethodFromList(String methodName, String xpathTemplate, String screenshotName) {
-        String formattedXpath = xpathTemplate.replace("{methodName}", methodName);
-        clickIfNotSelected($x(formattedXpath));
+    public static void selectMethodFromList(String methodName, String methodXpath, String screenshotName) {
+        String formattedXpath = methodXpath.replace("{methodName}", methodName);
+        SelenideElement element = $x(formattedXpath);
+        executeJavaScript("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", element);
         waitForSpinnerDisappear();
         screenshot(screenshotName);
     }

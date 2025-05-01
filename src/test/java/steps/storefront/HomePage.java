@@ -87,6 +87,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     @And("Переходим на страницу чекаута \\(проверяем на уникальность ID)")
     public void navigateTo_CheckoutPage() {
         executeJavaScript("window.scrollTo(0, 0);");
+        UtilsStorefront.safeCloseNotifications();
         header_Cart.click();
         button_Checkout.click();
         assertUniqueIDOnPage();
