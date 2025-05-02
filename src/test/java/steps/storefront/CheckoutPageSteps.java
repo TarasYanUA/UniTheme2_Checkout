@@ -42,9 +42,8 @@ public class CheckoutPageSteps implements AssertUniqueIDOnPage {
 
         if (methodType.equals("доставки")) {
             methodXpath = "//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
-            // Выбираем пункт выдачи
-            $$x("//label[contains(@for, 'store_')]").get(2).click();
-            UtilsStorefront.waitForSpinnerDisappear();
+            UtilsStorefront.selectPickUpPoint();
+
         } else if (methodType.equals("оплаты")) {
             methodXpath = "//div[contains(@class, 'b--pay-way__unit__text b--pay-ship__unit__text')]//div[contains(text(), '{methodName}')]";
         }
@@ -64,9 +63,7 @@ public class CheckoutPageSteps implements AssertUniqueIDOnPage {
         if (methodType.equals("доставки")) {
             methodXpath = "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
             dropdownSelector = ".b--ship-way__vendor-_0 .b--pay-ship__select";
-            // Выбираем пункт выдачи
-            $$x("//label[contains(@for, 'store_')]").get(2).click();
-            UtilsStorefront.waitForSpinnerDisappear();
+            UtilsStorefront.selectPickUpPoint();
         } else if (methodType.equals("оплаты")) {
             methodXpath = "//div[@class='litecheckout__shipping-method__title'][contains(text(), '{methodName}')]";
             dropdownSelector = ".b--pay-way__opted__text__title.b--pay-ship__opted__text__title";
