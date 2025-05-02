@@ -26,6 +26,28 @@ public class UtilsStorefront {
         }
     }
 
+    public static void handleCookieAndAdminPanel() {
+        SelenideElement button_CloseAdminBottomPanel = $("#bp_off_bottom_panel.bp-close");
+        if (button_CloseAdminBottomPanel.isDisplayed()) {
+            button_CloseAdminBottomPanel.click();
+        }
+        $(".cm-btn-success").click();
+        safeCloseNotifications();
+    }
+
+    // Универсальный метод скролла и JS-клика
+    public static void jsScrollAndClick(SelenideElement element) {
+        executeJavaScript("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", element);
+    }
+
+    public static void jsScrollToTop() {
+        executeJavaScript("window.scrollTo(0, 0);");
+    }
+
+    public static void openMyAccount() {
+        $(".ut2-top-my-account .ut2-icon-outline-account-circle").click();
+    }
+
     // Метод на ожидание того, что спиннер исчез
     public static void waitForSpinnerDisappear() {
         $("div#ajax_loading_box[style=\"display: block;\"]").shouldBe(Condition.disappear, Duration.ofSeconds(10));
