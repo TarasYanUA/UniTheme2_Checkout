@@ -9,20 +9,20 @@ import io.cucumber.java.en.And;
 
 import static com.codeborne.selenide.Selenide.*;
 import org.assertj.core.api.SoftAssertions;
-
 import java.time.Duration;
 
 public class CheckoutPage implements AssertUniqueIDOnPage {
-    public CheckoutPage(){super();}
+    public CheckoutPage() {
+        super();
+    }
+
     SoftAssertions softAssertions = CollectAssertMessages.getSoftAssertions();
 
     public SelenideElement button_PromoCode_Add = $("a[id^='sw_dropdown']");
     public SelenideElement field_PromoCode = $(".ty-gift-certificate-coupon #coupon_field");
     public SelenideElement button_PromoCode_Apply = $(".ty-gift-certificate-coupon .ty-btn-go");
-    public SelenideElement selectShippingMethod = $(".b--ship-way__opted__text.b--pay-ship__opted__text");
     public SelenideElement field_Country = $("#litecheckout_country");
     public SelenideElement field_City = $(".litecheckout__input--selectable--like-field");
-    public SelenideElement field_PaymentMethod = $(".b--pay-way__opted__text__title.b--pay-ship__opted__text__title");
     public SelenideElement agreement_TermsAndCondition = $("input[id^='id_accept_terms']");
     public SelenideElement agreement_CheckoutPlaceOrder = $("input[id^='gdpr_agreements_checkout_place_order_']");
     public SelenideElement agreement_CsCart = $("input[id^='product_agreements_']");
@@ -34,7 +34,8 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
         field_PromoCode.click();
         field_PromoCode.sendKeys(promoCode);
         button_PromoCode_Apply.click();
-        HomePage.notification_close.shouldBe(Condition.visible, Duration.ofSeconds(5));
+        UtilsStorefront.waitForSpinnerDisappear();
+        $(".cm-notification-close").shouldBe(Condition.visible, Duration.ofSeconds(5));
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
@@ -53,121 +54,131 @@ public class CheckoutPage implements AssertUniqueIDOnPage {
 
     @And("Выбираем страну и город доставки: {string}, {string}")
     public void selectCountryAndCity(String country, String city) {
-        field_Country.click();
+        field_Country.scrollIntoCenter().click();
         field_Country.selectOption(country);
         field_City.click();
-        field_City.clear();
         field_City.sendKeys(city);
-        $(".litecheckout__overlay--active").click();
+        $(".litecheckout__overlay--active").scrollIntoCenter().click();
         $(".litecheckout__overlay--active").shouldBe(Condition.disappear);
     }
 
-    @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи \\(скриншот {string})")
-    public void selectShippingMethod_asDropDownList(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
-            selectShippingMethod.click();
-            screenshot(screenshot + " ShippingMethod DropdownList");
-            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
+    @And("Выбираем способ {string} {string} из обычного списка \\(скриншот {string})")
+    public void selectMethodFromSimpleList(String methodType, String methodName, String screenshot) {
+        String methodXpath = "";
+
+        if (methodType.equals("доставки")) {
+            methodXpath = "//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
+            // Выбираем пункт выдачи
+            $$x("//label[contains(@for, 'store_')]").get(2).click();
+            UtilsStorefront.waitForSpinnerDisappear();
+        } else if (methodType.equals("оплаты")) {
+            methodXpath = "//div[contains(@class, 'b--pay-way__unit__text b--pay-ship__unit__text')]//div[contains(text(), '{methodName}')]";
         }
-        $x("(//label[contains(@for, 'store_')])[3]").click();
-        $x("//label[contains(@for, 'store_')]/input[@checked=\"checked\"]").shouldBe(Condition.exist);
-        screenshot(screenshot + " ShippingMethod");
+
+        UtilsStorefront.selectMethodFromList(
+                methodName,
+                methodXpath,
+                screenshot + " Способ " + methodType
+        );
     }
 
-    @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string})")
-    public void selectShippingMethod_asSimpleList(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]/../../.. /../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
-            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
+    @And("Выбираем способ {string} {string} из выпадающего списка \\(скриншот {string})")
+    public void selectMethodFromDropDown(String methodType, String methodName, String screenshot) {
+        String methodXpath = "";
+        String dropdownSelector = "";
+
+        if (methodType.equals("доставки")) {
+            methodXpath = "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]";
+            dropdownSelector = ".b--ship-way__vendor-_0 .b--pay-ship__select";
+            // Выбираем пункт выдачи
+            $$x("//label[contains(@for, 'store_')]").get(2).click();
+            UtilsStorefront.waitForSpinnerDisappear();
+        } else if (methodType.equals("оплаты")) {
+            methodXpath = "//div[@class='litecheckout__shipping-method__title'][contains(text(), '{methodName}')]";
+            dropdownSelector = ".b--pay-way__opted__text__title.b--pay-ship__opted__text__title";
         }
-        $x("(//label[contains(@for, 'store_')])[3]").click();
-        sleep(2000);
-        screenshot(screenshot + " ShippingMethod");
+
+        UtilsStorefront.selectMethodFromDropDown(
+                methodName,
+                methodXpath,
+                dropdownSelector,
+                screenshot + " Способ " + methodType
+        );
     }
 
     @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")
-    public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod) {
-        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]").exists()){
-            $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
-            $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
-        }
+    public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod, String screenshot) {
+        UtilsStorefront.selectMethodFromDropDown(
+                shippingMethod,
+                "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]",
+                ".b--ship-way__vendor-_0 .b--pay-ship__select",
+                screenshot + " ShippingMethod"
+        );
     }
 
     @And("Выбираем способ доставки {string} для первого продавца из обычного списка")
     public void selectShippingMethodForFirstVendor_SimpleList(String shippingMethod) {
-        if(!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]").exists()){
+        if (!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]").exists()) {
             $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
             $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
-        }
-    }
-
-    @And("Выбираем способ оплаты {string} из выпадающего списка \\(скриншот {string})")
-    public void selectPaymentMethod_asDropDownList(String paymentMethod, String screenshot) {
-        if(!$x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").isDisplayed()) {
-            field_PaymentMethod.scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}");
-            field_PaymentMethod.click();
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").hover();
-            screenshot(screenshot + " PaymentMethod DropdownList");
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
-            screenshot(screenshot + " PaymentMethod");
-        }
-    }
-
-    @And("Выбираем способ оплаты {string} из обычного списка \\(скриншот {string})")
-    public void selectPaymentMethod_asSimpleList(String paymentMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit_active')]//div[contains(text(), '" + paymentMethod + "')]").exists()) {
-            $x("//div[@class='litecheckout__shipping-method__title'][contains(text(), '" + paymentMethod + "')]").click();
-            sleep(2000);
-            screenshot(screenshot + " PaymentMethod");
+            UtilsStorefront.waitForSpinnerDisappear();
         }
     }
 
     @And("Ставим соглашения \\(проверяем на уникальность ID)")
     public void checkAgreements() {
         agreement_TermsAndCondition.click();
-        if(agreement_CheckoutPlaceOrder.exists())
+        if (agreement_CheckoutPlaceOrder.exists())
             agreement_CheckoutPlaceOrder.click();
-        if(agreement_CsCart.exists())
+        if (agreement_CsCart.exists())
             agreement_CsCart.click();
         assertUniqueIDOnPage();
     }
 
-    @Then("Завершаем оформление заказа и проверяем, что мы на странице {string} \\(скриншот {string})")
-    public void placeOrder(String pageBreadcrumb, String screenshot) {
+    @Then("Завершаем оформление заказа и проверяем, что заказ оформлен успешно \\(скриншот {string})")
+    public void placeOrder(String screenshot) {
         button_PlaceOrder.click();
+        UtilsStorefront.waitForSpinnerDisappear();
         sleep(2000);
-        screenshot(screenshot + " Success");
 
-        softAssertions.assertThat($x("//bdi[text()='" + pageBreadcrumb + "']").exists())
+        softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
                 .as("Заказ не оформлен успешно!")
                 .isTrue();
+        screenshot(screenshot + " Success");
         assertUniqueIDOnPage();
     }
 
+
+
+
     @And("Выбираем способ доставки {string} из выпадающего списка и выбираем пункт выдачи \\(скриншот {string}) \\(mobile)")
     public void selectShippingMethod_asDropDownList__mobile(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '" + shippingMethod + "')]").exists()) {
-            selectShippingMethod.click();
-            screenshot(screenshot + " ShippingMethod DropdownList");
-            $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
-        }
-        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
-        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        UtilsStorefront.selectMethodFromDropDown(
+                shippingMethod,
+                "//div[contains(@class, 'b--ship-way__opted__text__title')][contains(text(), '{methodName}')]",
+                ".b--ship-way__unit__text__title",
+                screenshot + " ShippingMethod"
+        );
+        $(".pickup__open-pickupups-btn").click();   //Кнопка "Выбрать из списка" (отделения)
+        sleep(2000);
+        screenshot(screenshot + "Pickup points");
+        $$x("//label[contains(@for, 'store_')]").get(2).click();
+        UtilsStorefront.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 
     @And("Выбираем способ доставки {string} из обычного списка и выбираем пункт выдачи \\(скриншот {string}) \\(mobile)")
     public void selectShippingMethod_asSimpleList__mobile(String shippingMethod, String screenshot) {
-        if(!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]/../../../../div[contains(@class, 'b--ship-way__unit_active')]").exists()){
+        if (!$x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]/../../../../div[contains(@class, 'b--ship-way__unit_active')]").exists()) {
             $x("//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '" + shippingMethod + "')]").click();
         }
-        //нужно будет дописать ещё 2 строки $x("(//label[contains(@for, 'store_')])[3]").click(); и sleep(2000); + кнопка нажатия для открытия окна выбора способа доставки
-        //когда будет исправлена ошибка в теме https://abteam.planfix.com/task/48376
+        $(".pickup__open-pickupups-btn").click();   //Кнопка "Выбрать из списка" (отделения)
         sleep(2000);
+        screenshot(screenshot + "Pickup points");
+        $$x("//label[contains(@for, 'store_')]").get(2).click();
+        UtilsStorefront.waitForSpinnerDisappear();
         screenshot(screenshot + " ShippingMethod");
     }
 }

@@ -120,7 +120,7 @@ public class BasicPage {
         $x("//a[text()='" + paymentMethod + "']").scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
         BasicPage.popupWindow.shouldBe(Condition.exist);
         if($(".image-delete").exists()) {
-            executeJavaScript("document.querySelector('input[id*='alt_icon_payment_image_']').scrollIntoView();");
+            executeJavaScript("document.querySelector(\"input[id*='alt_icon_payment_image_']\").scrollIntoView();");
             $("#alt_icon_payment_image_2").click();
             $(".image-delete").shouldBe(Condition.visible).click();
             Alert alert = webdriver().driver().switchTo().alert();
@@ -138,7 +138,9 @@ public class BasicPage {
         $x("//div[@id='shippings_content']//a[text()='" + shippingMethod + "']").scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
         sleep(2000);
         if($(".image-delete").exists()) {
-            executeJavaScript("document.querySelector('input[id*='alt_icon_shipping_']').scrollIntoView();");
+            //executeJavaScript("document.querySelector(\"input[id*='alt_icon_shipping_']\").scrollIntoView();");
+            executeJavaScript("document.querySelector(\"input[id*='alt_icon_shipping_']\").scrollIntoView({behavior: 'instant', block: 'center', inline: 'center'});");
+            $("input[id*='alt_icon_shipping_']").click();
             $(".image-delete").click();
             Alert alert = webdriver().driver().switchTo().alert();
             sleep(1500);
