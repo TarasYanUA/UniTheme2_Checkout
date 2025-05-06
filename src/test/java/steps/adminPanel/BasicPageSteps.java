@@ -69,7 +69,7 @@ public class BasicPageSteps {
     }
 
     @And("Удаляем изображение способу {string} {string} \\(mobile)")
-    public void deleteImageFromMethod_Mobile(String methodType, String methodName) {
+    public void deleteImageFromMethod__mobile(String methodType, String methodName) {
         boolean isShipping = methodType.equalsIgnoreCase("доставки");
         boolean isPayment = methodType.equalsIgnoreCase("оплаты");
 
