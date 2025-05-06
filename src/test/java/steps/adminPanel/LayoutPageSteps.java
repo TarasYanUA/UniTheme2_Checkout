@@ -3,11 +3,10 @@ package steps.adminPanel;
 import io.cucumber.java.en.And;
 
 public class LayoutPageSteps {
-    private final LayoutPage layoutPage;
 
-    public LayoutPageSteps(LayoutPage layoutPage) {
-        this.layoutPage = layoutPage;
-    }
+    public LayoutPageSteps() {super();}
+
+    LayoutPage layoutPage = new LayoutPage();
 
     @And("Устанавливаем макет {string} по умолчанию")
     public void setLayout_asDefault(String layoutName){

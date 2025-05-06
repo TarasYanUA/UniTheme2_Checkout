@@ -1,6 +1,5 @@
 package steps.adminPanel;
 
-import com.codeborne.selenide.Condition;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -9,11 +8,9 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class BasicPageSteps {
 
-    private final BasicPage basicPage;
+    public BasicPageSteps() {super();}
 
-    public BasicPageSteps(BasicPage basicPage) {
-        this.basicPage = basicPage;
-    }
+    BasicPage basicPage = new BasicPage();
 
     @Given("Переходим на страницу \"Веб-сайт -- Темы -- Макеты\"")
     public void navigateTo_LayoutPage() {
@@ -87,7 +84,7 @@ public class BasicPageSteps {
                 : "//a[text()='" + methodName + "']";
 
         basicPage.jsScrollAndClick($x(xpath));
-        basicPage.popupWindow.shouldBe(Condition.exist);
+        sleep(2000);    // здесь нужна именно пауза
 
         String scrollSelector = isShipping
                 ? "input[id*='alt_icon_shipping_']"

@@ -18,7 +18,7 @@ public class DriverHooks {
 
     public DriverHooks() {super();}
 
-    /*@Before()
+/*    @Before()
     public void openBrowser() {
         Configuration.browser = "edge";
         open(BASIC_URL);

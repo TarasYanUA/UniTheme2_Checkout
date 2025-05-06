@@ -11,6 +11,8 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class HomePageMobile implements AssertUniqueIDOnPage {
 
+    public HomePageMobile() { super(); }
+
     SelenideElement flyMenu_button = $(".ut2-icon-outline-menu");
     SelenideElement flyMenu_Logout = $("a[href*='dispatch=auth.logout']");
     SelenideElement flyMenu_button_ViewDetails_SecondLevel = $(".ut2-lsl.active .ty-float-right");

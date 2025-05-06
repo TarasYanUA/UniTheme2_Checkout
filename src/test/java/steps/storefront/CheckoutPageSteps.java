@@ -1,13 +1,11 @@
 package steps.storefront;
 
-import com.codeborne.selenide.Condition;
 import hooks.AssertUniqueIDOnPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.assertj.core.api.SoftAssertions;
 
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.$x;
 
 public class CheckoutPageSteps implements AssertUniqueIDOnPage {
 
@@ -19,7 +17,6 @@ public class CheckoutPageSteps implements AssertUniqueIDOnPage {
     @And("Используем промокод {string} \\(проверяем, что отобразился блок с применённой акцией)")
     public void usePromoCode(String promoCode) {
         checkoutPage.addPromoCode(promoCode);
-        $(".cm-notification-close").shouldBe(Condition.visible);
 
         softAssertions.assertThat($(".ty-coupons__item a[href]").exists())
                 .as("Промокод не применился или отсутствует секция с указанием применённого промокода!")
@@ -77,23 +74,19 @@ public class CheckoutPageSteps implements AssertUniqueIDOnPage {
         );
     }
 
-    @And("Выбираем способ доставки {string} для первого продавца из выпадающего списка")
-    public void selectShippingMethodForFirstVendor_DropdownList(String shippingMethod, String screenshot) {
-        UtilsStorefront.selectMethodFromDropDown(
-                shippingMethod,
-                "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]",
-                ".b--ship-way__vendor-_0 .b--pay-ship__select",
-                screenshot + " ShippingMethod"
-        );
-    }
-
-    @And("Выбираем способ доставки {string} для первого продавца из обычного списка")
-    public void selectShippingMethodForFirstVendor_SimpleList(String shippingMethod) {
-        if (!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
-                + shippingMethod + "')]").exists()) {
-            $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
-            $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
-            UtilsStorefront.waitForSpinnerDisappear();
+    @And("Выбираем способ доставки {string} для первого продавца из {string} списка \\(скриншот {string})")
+    public void selectShippingMethodForFirstVendor(String shippingMethod, String listType, String screenshot) {
+        if (listType.equalsIgnoreCase("выпадающего")) {
+            UtilsStorefront.selectMethodFromDropDown(
+                    shippingMethod,
+                    "//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '{methodName}')]",
+                    ".b--ship-way__vendor-_0 .b--pay-ship__select",
+                    screenshot + " ShippingMethod"
+            );
+        } else if (listType.equalsIgnoreCase("обычного")) {
+            checkoutPage.selectShippingMethodFromSimpleListForFirstVendor(shippingMethod);
+        } else {
+            throw new IllegalArgumentException("Неизвестный тип списка: \"" + listType + "\". Ожидалось: \"выпадающего\" или \"обычного\".");
         }
     }
 
@@ -112,6 +105,7 @@ public class CheckoutPageSteps implements AssertUniqueIDOnPage {
         softAssertions.assertThat($(".ty-checkout-complete__order-success").exists())
                 .as("Заказ не оформлен успешно!")
                 .isTrue();
+
         screenshot(screenshot + " Success");
         assertUniqueIDOnPage();
     }

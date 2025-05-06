@@ -8,9 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class LayoutPage {
-    public LayoutPage(){super();}
 
-    SelenideElement popupWindow = $(".ui-dialog-title");
     SelenideElement gearwheelOfActiveLayout = $(".with-menu.active .dropdown-toggle");
     SelenideElement button_makeByDefault = $(".with-menu.active a[href*='block_manager.set_default_layout']");
     SelenideElement layoutTab_Checkout = $x("//a[text()='Оформить заказ']");
@@ -22,7 +20,7 @@ public class LayoutPage {
         layoutTab_Checkout.click();
         $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties")
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
-        popupWindow.shouldBe(Condition.visible);
+        BasicPage.popupWindow.shouldBe(Condition.visible);
         Selenide.executeJavaScript("arguments[0].click();", button_SettingsOfTemplate);
     }
 

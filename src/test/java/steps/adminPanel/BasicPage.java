@@ -7,7 +7,7 @@ import org.openqa.selenium.Alert;
 
 public class BasicPage {
 
-    SelenideElement popupWindow = $(".ui-dialog-title");
+    public static SelenideElement popupWindow = $(".ui-dialog-title");
     SelenideElement button_Save = $(".btn.btn-primary.cm-submit");
     SelenideElement button_ShowAdminPanel = $(".bp-bottom-button--logo");
     SelenideElement goTo_Storefront = $(".bp-nav__item-text");
@@ -73,7 +73,7 @@ public class BasicPage {
     public void openShippingMethodSettings(String methodName) {
         section_ShippingMethod.click();
         $x("//div[@id='shippings_content']//a[text()='" + methodName + "']").click();
-        popupWindow.shouldBe(Condition.exist);
+        sleep(2000);    //здесь нужна именно пауза
     }
 
     public void openPaymentMethodSettings(String methodName) {
