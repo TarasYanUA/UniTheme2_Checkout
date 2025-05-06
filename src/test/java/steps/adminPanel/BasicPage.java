@@ -82,6 +82,33 @@ public class BasicPage {
         popupWindow.shouldBe(Condition.exist);
     }
 
+    public void addImageToShippingMethod(String methodName, String imageUrl) {
+        openShippingMethodSettings(methodName);
+        $x("//a[contains(@id, 'url_')]").click();
+        alert_AddImage(imageUrl);
+        saveChanges();
+    }
+
+    public void addImageToPaymentMethod(String methodName, String imageUrl) {
+        openPaymentMethodSettings(methodName);
+        $x("//span[text()='" + methodName + "']/../..//a[contains(@id, 'url_')]").click();
+        alert_AddImage(imageUrl);
+        savePopUpWindow();
+    }
+
+    public void deleteImageFromShippingMethod(String methodName) {
+        openShippingMethodSettings(methodName);
+        alert_DeleteImage();
+        saveChanges();
+    }
+
+    public void deleteImageFromPaymentMethod(String methodName) {
+        openPaymentMethodSettings(methodName);
+        alert_DeleteImage();
+        savePopUpWindow();
+    }
+
+
 
     // Мобильное устройство
     public void navigateTo_LayoutPage__mobile() {

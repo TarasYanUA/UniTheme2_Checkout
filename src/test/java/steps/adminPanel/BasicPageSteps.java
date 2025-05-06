@@ -29,18 +29,15 @@ public class BasicPageSteps {
     public void addImageToMethod(String methodType, String methodName) {
         basicPage.openMenuOfSettings();
 
-        if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.openShippingMethodSettings(methodName);
-            $x("//a[contains(@id, 'url_')]").click();
-            basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=b2");
-            basicPage.saveChanges();
-        } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.openPaymentMethodSettings(methodName);
-            $x("//span[text()='" + methodName + "']/../..//a[contains(@id, 'url_')]").click();
-            basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=a1");
-            basicPage.savePopUpWindow();
-        } else {
-            throw new IllegalArgumentException("Неизвестный тип: " + methodType);
+        switch (methodType.toLowerCase()) {
+            case "доставки":
+                basicPage.addImageToShippingMethod(methodName, "https://dummyimage.com/50x50/09f/fff.png&text=b2");
+                break;
+            case "оплаты":
+                basicPage.addImageToPaymentMethod(methodName, "https://dummyimage.com/50x50/09f/fff.png&text=a1");
+                break;
+            default:
+                throw new IllegalArgumentException("Неизвестный тип: \"" + methodType + "\". Ожидалось: \"доставки\" или \"оплаты\".");
         }
     }
 
@@ -48,16 +45,15 @@ public class BasicPageSteps {
     public void deleteImageFromMethod(String methodType, String methodName) {
         basicPage.openMenuOfSettings();
 
-        if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.openShippingMethodSettings(methodName);
-            basicPage.alert_DeleteImage();
-            basicPage.saveChanges();
-        } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.openPaymentMethodSettings(methodName);
-            basicPage.alert_DeleteImage();
-            basicPage.savePopUpWindow();
-        } else {
-            throw new IllegalArgumentException("Неизвестный тип: " + methodType);
+        switch (methodType.toLowerCase()) {
+            case "доставки":
+                basicPage.deleteImageFromShippingMethod(methodName);
+                break;
+            case "оплаты":
+                basicPage.deleteImageFromPaymentMethod(methodName);
+                break;
+            default:
+                throw new IllegalArgumentException("Неизвестный тип: \"" + methodType + "\". Ожидалось: \"доставки\" или \"оплаты\".");
         }
     }
 
