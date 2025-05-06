@@ -1,5 +1,6 @@
 package steps.adminPanel;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.*;
 import org.openqa.selenium.Alert;
@@ -63,6 +64,22 @@ public class BasicPage {
             sleep(1500);
             alert.accept();
         }
+    }
+
+    public void jsScrollAndClick(SelenideElement element) {
+        executeJavaScript("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", element);
+    }
+
+    public void openShippingMethodSettings(String methodName) {
+        section_ShippingMethod.click();
+        $x("//div[@id='shippings_content']//a[text()='" + methodName + "']").click();
+        popupWindow.shouldBe(Condition.exist);
+    }
+
+    public void openPaymentMethodSettings(String methodName) {
+        section_PaymentMethod.click();
+        $x("//a[text()='" + methodName + "']").click();
+        popupWindow.shouldBe(Condition.exist);
     }
 
 

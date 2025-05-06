@@ -30,16 +30,12 @@ public class BasicPageSteps {
         basicPage.openMenuOfSettings();
 
         if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.section_ShippingMethod.click();
-            $x("//div[@id='shippings_content']//a[text()='" + methodName + "']").click();
-            sleep(2000);
+            basicPage.openShippingMethodSettings(methodName);
             $x("//a[contains(@id, 'url_')]").click();
             basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=b2");
             basicPage.saveChanges();
         } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.section_PaymentMethod.click();
-            $x("//a[text()='" + methodName + "']").click();
-            basicPage.popupWindow.shouldBe(Condition.exist);
+            basicPage.openPaymentMethodSettings(methodName);
             $x("//span[text()='" + methodName + "']/../..//a[contains(@id, 'url_')]").click();
             basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=a1");
             basicPage.savePopUpWindow();
@@ -53,15 +49,11 @@ public class BasicPageSteps {
         basicPage.openMenuOfSettings();
 
         if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.section_ShippingMethod.click();
-            $x("//div[@id='shippings_content']//a[text()='" + methodName + "']").click();
-            basicPage.popupWindow.shouldBe(Condition.exist);
+            basicPage.openShippingMethodSettings(methodName);
             basicPage.alert_DeleteImage();
             basicPage.saveChanges();
         } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.section_PaymentMethod.click();
-            $x("//a[text()='" + methodName + "']").click();
-            basicPage.popupWindow.shouldBe(Condition.exist);
+            basicPage.openPaymentMethodSettings(methodName);
             basicPage.alert_DeleteImage();
             basicPage.savePopUpWindow();
         } else {
@@ -77,7 +69,7 @@ public class BasicPageSteps {
     }
 
     @And("Удаляем изображение способу {string} {string} \\(mobile)")
-    public void deleteImageFromMethodMobile(String methodType, String methodName) {
+    public void deleteImageFromMethod_Mobile(String methodType, String methodName) {
         boolean isShipping = methodType.equalsIgnoreCase("доставки");
         boolean isPayment = methodType.equalsIgnoreCase("оплаты");
 
@@ -98,10 +90,7 @@ public class BasicPageSteps {
                 ? "//div[@id='shippings_content']//a[text()='" + methodName + "']"
                 : "//a[text()='" + methodName + "']";
 
-        $x(xpath)
-                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}")
-                .click();
-
+        basicPage.jsScrollAndClick($x(xpath));
         basicPage.popupWindow.shouldBe(Condition.exist);
 
         String scrollSelector = isShipping
@@ -112,12 +101,8 @@ public class BasicPageSteps {
                 ? scrollSelector
                 : "#alt_icon_payment_image_2";
 
-        $(scrollSelector)
-                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}")
-                .click();
-
+        basicPage.jsScrollAndClick($(scrollSelector));
         $(clickTarget).click();
-
         basicPage.alert_DeleteImage();
 
         if (isShipping) {
