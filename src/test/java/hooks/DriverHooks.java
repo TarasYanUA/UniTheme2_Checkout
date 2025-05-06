@@ -18,7 +18,7 @@ public class DriverHooks {
 
     public DriverHooks() {super();}
 
-    @Before()
+    /*@Before()
     public void openBrowser() {
         Configuration.browser = "edge";
         open(BASIC_URL);
@@ -31,9 +31,9 @@ public class DriverHooks {
 
         $(".btn.btn-primary").click();
         $("#bp_off_bottom_panel").click();
-    }
+    }*/
 
-/*    @Before() //под мобильное устройство
+    @Before() //под мобильное устройство
     public void prepareBrowser() {
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "iPhone 12 Pro");
@@ -44,6 +44,7 @@ public class DriverHooks {
         open(BASIC_URL);
         Configuration.timeout = 2000; //Общая задержка
         Configuration.screenshots = true; //делаем скриншоты при падении
+        Configuration.savePageSource = false; //не создавать html файлы при создании скриншотов
 
         SoftAssertions softAssertions = new SoftAssertions();
         CollectAssertMessages.setSoftAssertions(softAssertions);
@@ -53,7 +54,7 @@ public class DriverHooks {
         if ($(".close.cm-notification-close").exists())
             $(".close.cm-notification-close").click();
         Selenide.sleep(1000);
-    }*/
+    }
 
     @After
     public void closerBrowser() {

@@ -2,6 +2,9 @@ package steps.storefront;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
 public class CheckoutPage {
@@ -42,6 +45,7 @@ public class CheckoutPage {
         field_Country.selectOption(country);
         UtilsStorefront.jsScrollAndClick(field_City);
         field_City.setValue(city);
+        $(".litecheckout__overlay--active").shouldBe(Condition.visible, Duration.ofSeconds(10));
         UtilsStorefront.jsScrollAndClick($(".litecheckout__overlay--active"));
         $(".litecheckout__overlay--active").shouldBe(Condition.disappear);
     }
