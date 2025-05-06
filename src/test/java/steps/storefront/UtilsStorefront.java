@@ -73,7 +73,8 @@ public class UtilsStorefront {
 
     // Метод для выбора пункта выдачи
     public static void selectPickUpPoint() {
-        if ($("button.pickup__open-pickupups-btn").exists())    //Условие нужно для мобильного устройства
+        if ($("button.pickup__open-pickupups-btn").isDisplayed() &&
+                $("button.pickup__open-pickupups-btn").isEnabled())    //Условие нужно для мобильного устройства
             $("button.pickup__open-pickupups-btn").click();
         $$x("//label[contains(@for, 'store_')]").get(2).click();
         UtilsStorefront.waitForSpinnerDisappear();

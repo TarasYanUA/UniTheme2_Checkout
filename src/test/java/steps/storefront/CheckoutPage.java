@@ -8,6 +8,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CheckoutPage {
+
     SelenideElement button_PromoCode_Add = $("a[id^='sw_dropdown']");
     SelenideElement field_PromoCode = $(".ty-gift-certificate-coupon #coupon_field");
     SelenideElement button_PromoCode_Apply = $(".ty-gift-certificate-coupon .ty-btn-go");
@@ -69,5 +70,16 @@ public class CheckoutPage {
         button_PlaceOrder.click();
         UtilsStorefront.waitForSpinnerDisappear();
         sleep(2000);
+    }
+
+
+    // Мультивендор
+    public void selectShippingMethodFromSimpleListForFirstVendor(String shippingMethod) {
+        if (!$x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(@class, 'b--ship-way__unit__text')]/div[contains(text(), '"
+                + shippingMethod + "')]").exists()) {
+            $(".b--ship-way__vendor-_0 .b--pay-ship__select").click();
+            $x("//div[contains(@class, 'b--ship-way__vendor-_0')]//div[contains(text(), '" + shippingMethod + "')]").click();
+            UtilsStorefront.waitForSpinnerDisappear();
+        }
     }
 }

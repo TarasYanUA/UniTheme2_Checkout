@@ -1,6 +1,5 @@
 package steps.adminPanel;
 
-import com.codeborne.selenide.Condition;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -9,11 +8,9 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class BasicPageSteps {
 
-    private final BasicPage basicPage;
+    public BasicPageSteps() {super();}
 
-    public BasicPageSteps(BasicPage basicPage) {
-        this.basicPage = basicPage;
-    }
+    BasicPage basicPage = new BasicPage();
 
     @Given("Переходим на страницу \"Веб-сайт -- Темы -- Макеты\"")
     public void navigateTo_LayoutPage() {
@@ -29,18 +26,15 @@ public class BasicPageSteps {
     public void addImageToMethod(String methodType, String methodName) {
         basicPage.openMenuOfSettings();
 
-        if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.openShippingMethodSettings(methodName);
-            $x("//a[contains(@id, 'url_')]").click();
-            basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=b2");
-            basicPage.saveChanges();
-        } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.openPaymentMethodSettings(methodName);
-            $x("//span[text()='" + methodName + "']/../..//a[contains(@id, 'url_')]").click();
-            basicPage.alert_AddImage("https://dummyimage.com/50x50/09f/fff.png&text=a1");
-            basicPage.savePopUpWindow();
-        } else {
-            throw new IllegalArgumentException("Неизвестный тип: " + methodType);
+        switch (methodType.toLowerCase()) {
+            case "доставки":
+                basicPage.addImageToShippingMethod(methodName, "https://dummyimage.com/50x50/09f/fff.png&text=b2");
+                break;
+            case "оплаты":
+                basicPage.addImageToPaymentMethod(methodName, "https://dummyimage.com/50x50/09f/fff.png&text=a1");
+                break;
+            default:
+                throw new IllegalArgumentException("Неизвестный тип: \"" + methodType + "\". Ожидалось: \"доставки\" или \"оплаты\".");
         }
     }
 
@@ -48,16 +42,15 @@ public class BasicPageSteps {
     public void deleteImageFromMethod(String methodType, String methodName) {
         basicPage.openMenuOfSettings();
 
-        if (methodType.equalsIgnoreCase("доставки")) {
-            basicPage.openShippingMethodSettings(methodName);
-            basicPage.alert_DeleteImage();
-            basicPage.saveChanges();
-        } else if (methodType.equalsIgnoreCase("оплаты")) {
-            basicPage.openPaymentMethodSettings(methodName);
-            basicPage.alert_DeleteImage();
-            basicPage.savePopUpWindow();
-        } else {
-            throw new IllegalArgumentException("Неизвестный тип: " + methodType);
+        switch (methodType.toLowerCase()) {
+            case "доставки":
+                basicPage.deleteImageFromShippingMethod(methodName);
+                break;
+            case "оплаты":
+                basicPage.deleteImageFromPaymentMethod(methodName);
+                break;
+            default:
+                throw new IllegalArgumentException("Неизвестный тип: \"" + methodType + "\". Ожидалось: \"доставки\" или \"оплаты\".");
         }
     }
 
@@ -69,7 +62,7 @@ public class BasicPageSteps {
     }
 
     @And("Удаляем изображение способу {string} {string} \\(mobile)")
-    public void deleteImageFromMethod_Mobile(String methodType, String methodName) {
+    public void deleteImageFromMethod__mobile(String methodType, String methodName) {
         boolean isShipping = methodType.equalsIgnoreCase("доставки");
         boolean isPayment = methodType.equalsIgnoreCase("оплаты");
 
@@ -91,7 +84,7 @@ public class BasicPageSteps {
                 : "//a[text()='" + methodName + "']";
 
         basicPage.jsScrollAndClick($x(xpath));
-        basicPage.popupWindow.shouldBe(Condition.exist);
+        sleep(2000);    // здесь нужна именно пауза
 
         String scrollSelector = isShipping
                 ? "input[id*='alt_icon_shipping_']"
