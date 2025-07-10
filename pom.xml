@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
         <aspectj.version>1.9.22</aspectj.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cucumber.plugin>json:target/cucumber.json</cucumber.plugin>
@@ -61,35 +61,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <!-- Запуск тестов с помощью maven-failsafe-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <testSourceDirectory>src/test/resources/features</testSourceDirectory>
-                    <includes>
-                        <include>**/*.feature</include>
-                    </includes>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
-                    <systemPropertyVariables>
-                        <cucumber.plugin>${cucumber.plugin}</cucumber.plugin>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <repositories>
         <repository>
             <id>maven_central</id>

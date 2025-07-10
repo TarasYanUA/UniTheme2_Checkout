@@ -24,10 +24,10 @@ public class CheckoutPage {
 
 
     public void addPromoCode(String promoCode) {
-        button_PromoCode_Add.click();
-        field_PromoCode.click();
+        UtilsStorefront.jsScrollAndClick(button_PromoCode_Add);
+        UtilsStorefront.jsScrollAndClick(field_PromoCode);
         field_PromoCode.sendKeys(promoCode);
-        button_PromoCode_Apply.click();
+        UtilsStorefront.jsScrollAndClick(button_PromoCode_Apply);
         UtilsStorefront.waitForSpinnerDisappear();
         $(".cm-notification-close").shouldBe(Condition.visible);
     }
