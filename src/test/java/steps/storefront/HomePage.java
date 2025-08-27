@@ -13,7 +13,7 @@ public class HomePage implements AssertUniqueIDOnPage {
     SelenideElement button_LogOut = $(".ut2-top-my-account a[href*='dispatch=auth.logout']");
     SelenideElement button_SignIn = $(".ut2-top-my-account a[href*='login']");
     SelenideElement button_SignIn_Popup = $("button[name='dispatch[auth.login]']");
-    SelenideElement button_MainMenuCategories = $(".top-menu-grid-vetrtical .ut2-icon");
+    SelenideElement button_MainMenuCategories = $(".top-menu-grid-vertical .ut2-icon");
     SelenideElement button_AddToCart_PopUp = $(".buttons-container-picker .ty-btn__add-to-cart");
     SelenideElement button_ContinueShopping = $(".ty-btn__secondary.cm-notification-close");
     SelenideElement button_Checkout = $(".cm-cart-buttons a[href*='checkout']");
