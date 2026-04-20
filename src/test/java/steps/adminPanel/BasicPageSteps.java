@@ -103,5 +103,6 @@ public class BasicPageSteps {
         } else {
             basicPage.button_SavePopUpWindow.click();
         }
+        sleep(2000);
     }
 }

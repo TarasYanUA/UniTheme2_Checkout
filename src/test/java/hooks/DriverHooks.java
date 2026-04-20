@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DriverHooks {
-    public static final String BASIC_URL = "https://trs.test.abt.team/4184ultru_abank/admin.php?dispatch=addons.manage";
+    public static final String BASIC_URL = "https://trs.test.abt.team/4201ultru/admin.php?dispatch=addons.manage";
 
     public DriverHooks() {super();}
 
@@ -42,7 +42,7 @@ public class DriverHooks {
         WebDriver driver = new ChromeDriver(chromeOptions);
         WebDriverRunner.setWebDriver(driver);   // Устанавливаем созданный драйвер как текущий драйвер для Selenide
         open(BASIC_URL);
-        Configuration.timeout = 2000; //Общая задержка
+        Configuration.timeout = 4000; //Общая задержка (не меньше 4 сек)
         Configuration.screenshots = true; //делаем скриншоты при падении
         Configuration.savePageSource = false; //не создавать html файлы при создании скриншотов
 
@@ -65,7 +65,6 @@ public class DriverHooks {
             System.out.println("\nОшибки в asserts:");
             System.out.println(e.getMessage());
         }
-
         closeWebDriver();
     }
 }

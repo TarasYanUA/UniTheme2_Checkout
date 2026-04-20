@@ -20,7 +20,7 @@ public class BasicPage {
     SelenideElement button_SavePopUpWindow = $(".ui-dialog-content input[value='Сохранить']");
 
     // Мобильное устройство
-    SelenideElement mobile_MainMenu = $(".mobile-menu-toggler");
+    SelenideElement mobile_MainMenu = $(".mobile-menu__toggler");
     SelenideElement mobile_ThemeActionsMenu = $(".actions-menu__dropdown-toggle");
     SelenideElement mobile_section_Themes = $("a[href*='dispatch=themes.manage'].main-menu-1__link");
     SelenideElement mobile_sectionLayouts = $(".actions-menu__dropdown-item-wrapper a[href$='block_manager.manage']");
