@@ -45,7 +45,7 @@ public class UtilsStorefront {
     }
 
     public static void openMyAccount() {
-        $(".ut2-top-my-account .ut2-icon-outline-account-circle").click();
+        $(".ut2-top-my-account .ut2-account-info__avatar").click();
     }
 
     // Метод на ожидание того, что спиннер исчез

@@ -3,6 +3,7 @@ package steps.adminPanel;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import steps.storefront.UtilsStorefront;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
@@ -17,6 +18,7 @@ public class LayoutPage {
     SelenideElement button_SaveBlockProperties = $("input[name='dispatch[block_manager.update_block]']");
 
     public void navigateToBlockSettings(String blockName) {
+        UtilsStorefront.safeCloseNotifications();
         layoutTab_Checkout.click();
         $("div[data-ca-block-name='" + blockName + "']").$(".bm-action-properties")
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"center\"}").click();
